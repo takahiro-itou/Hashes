@@ -22,7 +22,7 @@
 
 #include    <iostream>
 
-using   namespace   SAMPLE_NAMESPACE;
+using   namespace   HASHES_NAMESPACE;
 
 int  main(int argc, char * argv[])
 {

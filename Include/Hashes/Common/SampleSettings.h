@@ -28,7 +28,7 @@
 #    include    "Hashes/.Config/ConfiguredHashes.h"
 #endif
 
-SAMPLE_NAMESPACE_BEGIN
+HASHES_NAMESPACE_BEGIN
 
 /**
 **    ダミーの型宣言。
@@ -36,6 +36,6 @@ SAMPLE_NAMESPACE_BEGIN
 
 typedef     int     CommonType;
 
-SAMPLE_NAMESPACE_END
+HASHES_NAMESPACE_END
 
 #endif
