@@ -58,8 +58,8 @@ dnl
 dnl   Project Name Space.
 dnl
 
-SAMPLE_CNF_NAMESPACE=Sample
-AC_SUBST(SAMPLE_CNF_NAMESPACE)
+HASHES_CNF_NAMESPACE=Hashes
+AC_SUBST(HASHES_CNF_NAMESPACE)
 
 
 dnl ----------------------------------------------------------------

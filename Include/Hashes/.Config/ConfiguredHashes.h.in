@@ -30,7 +30,7 @@
 **    スクリプトによって設定された名前空間。
 **/
 
-#define     HASHES_CNF_NS                   @SAMPLE_CNF_NAMESPACE@
+#define     HASHES_CNF_NS                   @HASHES_CNF_NAMESPACE@
 
 /**
 **    名前空間。
