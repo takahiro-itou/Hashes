@@ -1,9 +1,9 @@
 ﻿//  -*-  coding: utf-8-with-signature;  mode: c++  -*-  //
 /*************************************************************************
 **                                                                      **
-**                      ---  Library Project.  ---                      **
+**                  ---   Hash Functions Library   ---                  **
 **                                                                      **
-**          Copyright (C), 2016-2024, Takahiro Itou                     **
+**          Copyright (C), 2025-2025, Takahiro Itou                     **
 **          All Rights Reserved.                                        **
 **                                                                      **
 **          License: (See COPYING or LICENSE files)                     **
@@ -19,10 +19,10 @@
 **/
 
 #include    "TestDriver.h"
-#include    "Sample/Common/SampleDocument.h"
+#include    "Hashes/Common/SampleDocument.h"
 
 
-SAMPLE_NAMESPACE_BEGIN
+HASHES_NAMESPACE_BEGIN
 namespace  Common  {
 
 //========================================================================
@@ -105,7 +105,7 @@ void  SampleDocumentTest::testCountAlphabet3()
 }
 
 }   //  End of namespace  Common
-SAMPLE_NAMESPACE_END
+HASHES_NAMESPACE_END
 
 //========================================================================
 //

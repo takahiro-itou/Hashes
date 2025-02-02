@@ -1,9 +1,9 @@
 ﻿//  -*-  coding: utf-8-with-signature;  mode: c++  -*-  //
 /*************************************************************************
 **                                                                      **
-**                      ---  Library Project.  ---                      **
+**                  ---   Hash Functions Library   ---                  **
 **                                                                      **
-**          Copyright (C), 2016-2024, Takahiro Itou                     **
+**          Copyright (C), 2025-2025, Takahiro Itou                     **
 **          All Rights Reserved.                                        **
 **                                                                      **
 **          License: (See COPYING or LICENSE files)                     **
@@ -18,17 +18,17 @@
 **      @file       Common/SampleSettings.h
 **/
 
-#if !defined( SAMPLE_COMMON_INCLUDED_SAMPLE_SETTINGS_H )
-#    define   SAMPLE_COMMON_INCLUDED_SAMPLE_SETTINGS_H
+#if !defined( HASHES_COMMON_INCLUDED_SAMPLE_SETTINGS_H )
+#    define   HASHES_COMMON_INCLUDED_SAMPLE_SETTINGS_H
 
 //  スクリプトによる設定値が書き込まれたヘッダを読み込む。  //
-#if defined( SAMPLE_USE_PRE_CONFIGURED_MSVC )
-#    include    "Sample/.Config/PreConfigSample.msvc.h"
+#if defined( HASHES_USE_PRE_CONFIGURED_MSVC )
+#    include    "Hashes/.Config/PreConfigHashes.msvc.h"
 #else
-#    include    "Sample/.Config/ConfiguredSample.h"
+#    include    "Hashes/.Config/ConfiguredHashes.h"
 #endif
 
-SAMPLE_NAMESPACE_BEGIN
+HASHES_NAMESPACE_BEGIN
 
 /**
 **    ダミーの型宣言。
@@ -36,6 +36,6 @@ SAMPLE_NAMESPACE_BEGIN
 
 typedef     int     CommonType;
 
-SAMPLE_NAMESPACE_END
+HASHES_NAMESPACE_END
 
 #endif
