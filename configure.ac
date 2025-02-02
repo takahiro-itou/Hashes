@@ -162,7 +162,7 @@ AC_CONFIG_FILES([
 ])
 
 AC_CONFIG_FILES([
-    Include/Hashes/.Config/ConfiguredSample.h
+    Include/Hashes/.Config/ConfiguredHashes.h
 ])
 
 dnl

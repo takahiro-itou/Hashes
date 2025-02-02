@@ -23,9 +23,9 @@
 
 //  スクリプトによる設定値が書き込まれたヘッダを読み込む。  //
 #if defined( HASHES_USE_PRE_CONFIGURED_MSVC )
-#    include    "Hashes/.Config/PreConfigSample.msvc.h"
+#    include    "Hashes/.Config/PreConfigHashes.msvc.h"
 #else
-#    include    "Hashes/.Config/ConfiguredSample.h"
+#    include    "Hashes/.Config/ConfiguredHashes.h"
 #endif
 
 SAMPLE_NAMESPACE_BEGIN
