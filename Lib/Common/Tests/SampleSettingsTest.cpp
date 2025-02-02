@@ -22,7 +22,7 @@
 #include    "Hashes/Common/SampleSettings.h"
 
 
-SAMPLE_NAMESPACE_BEGIN
+HASHES_NAMESPACE_BEGIN
 
 //========================================================================
 //
@@ -58,7 +58,7 @@ void  SampleSettingsTest::testNameSpace()
     return;
 }
 
-SAMPLE_NAMESPACE_END
+HASHES_NAMESPACE_END
 
 //========================================================================
 //
