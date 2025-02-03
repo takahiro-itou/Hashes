@@ -7,7 +7,7 @@
 ##    List of Directories.
 ##
 
-module_dir_name     =  Common
+module_dir_name     =  MD5
 # SUBDIRS             =  .  Tests
 
 include  $(top_srcdir)/.M4/BuildCommon/DirList.inc
