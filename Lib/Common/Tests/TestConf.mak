@@ -5,8 +5,8 @@
 
 extra_tests             =
 TESTS                   =  \
+        HashesSettingsTest      \
         SampleDocumentTest      \
-        SampleSettingsTest      \
         ${extra_tests}
 
 ##
@@ -33,4 +33,4 @@ test_ldflags_common         +=
 ##
 
 SampleDocumentTest_SOURCES      =  SampleDocumentTest.cpp
-SampleSettingsTest_SOURCES      =  SampleSettingsTest.cpp
+HashesSettingsTest_SOURCES      =  HashesSettingsTest.cpp

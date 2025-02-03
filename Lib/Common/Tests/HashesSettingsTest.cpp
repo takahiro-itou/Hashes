@@ -13,9 +13,9 @@
 *************************************************************************/
 
 /**
-**      An Implementation of Test Case 'SampleSettings'.
+**      An Implementation of Test Case 'HashesSettings'.
 **
-**      @file       Common/Tests/SampleSettingsTest.cpp
+**      @file       Common/Tests/HashesSettingsTest.cpp
 **/
 
 #include    "TestDriver.h"
@@ -26,15 +26,15 @@ HASHES_NAMESPACE_BEGIN
 
 //========================================================================
 //
-//    SampleSettingsTest  class.
+//    HashesSettingsTest  class.
 //
 /**
-**    クラス SampleSettings の単体テスト。
+**    クラス HashesSettings の単体テスト。
 **/
 
-class  SampleSettingsTest : public  TestFixture
+class  HashesSettingsTest : public  TestFixture
 {
-    CPPUNIT_TEST_SUITE(SampleSettingsTest);
+    CPPUNIT_TEST_SUITE(HashesSettingsTest);
     CPPUNIT_TEST(testNameSpace);
     CPPUNIT_TEST_SUITE_END();
 
@@ -46,14 +46,14 @@ private:
     void  testNameSpace();
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION( SampleSettingsTest );
+CPPUNIT_TEST_SUITE_REGISTRATION( HashesSettingsTest );
 
 //========================================================================
 //
 //    Tests.
 //
 
-void  SampleSettingsTest::testNameSpace()
+void  HashesSettingsTest::testNameSpace()
 {
     return;
 }
