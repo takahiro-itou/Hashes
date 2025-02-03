@@ -19,7 +19,7 @@
 **/
 
 #include    "TestDriver.h"
-#include    "Hashes/Common/SampleSettings.h"
+#include    "Hashes/Common/HashesSettings.h"
 
 
 HASHES_NAMESPACE_BEGIN
