@@ -7,8 +7,8 @@
 ##    List of Directories.
 ##
 
-module_dir_name     =  Common
-SUBDIRS             =  .  Tests
+module_dir_name     =  MD5
+# SUBDIRS             =  .  Tests
 
 include  $(top_srcdir)/.M4/BuildCommon/DirList.inc
 include  $(top_srcdir)/.M4/BuildCommon/DefVars.inc
@@ -23,7 +23,7 @@ extra_noinst_data_files     =
 extra_noinst_header_files   =
 
 library_source_files        +=  \
-        SampleDocument.cpp             \
+        MD5.cpp                         \
         ${extra_library_source_files}
 
 library_instantiations      +=
@@ -36,8 +36,7 @@ dist_noinst_header_files    +=  \
         ${extra_noinst_header_files}
 
 inclib_header_files         +=  \
-        ${inclib_source_dir}/SampleDocument.h  \
-        ${inclib_source_dir}/HashesSettings.h  \
+        ${inclib_source_dir}/MD5.h      \
         ${extra_library_header_files}
 
 inclib_nodist_header_files  +=
@@ -53,7 +52,7 @@ library_compile_srcfiles    +=  \
 ##    List of Libraries.
 ##
 
-static_libraries_list   +=  libsampleCommon.static.a
+static_libraries_list   +=  libhsMD5.static.a
 shared_libraries_list   +=
 
 ##
@@ -70,4 +69,4 @@ include  $(top_srcdir)/.M4/BuildCommon/Install.inc
 ##    Build Libraries.
 ##
 
-libsampleCommon_static_a_SOURCES    =  ${library_source_files}
+libhsMD5_static_a_SOURCES   =  ${library_source_files}
