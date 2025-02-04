@@ -1,0 +1,6 @@
+
+/*  Linker Script.  */
+INPUT( AS_NEEDED(MD5/libhsMD5.static.a) )
+
+INPUT( AS_NEEDED(-lhCommon) )
+
