@@ -71,4 +71,4 @@ include  $(top_srcdir)/.M4/BuildCommon/Install.inc
 ##    Build Libraries.
 ##
 
-libsampleCommon_static_a_SOURCES    =  ${library_source_files}
+libhsCommon_static_a_SOURCES    =  ${library_source_files}
