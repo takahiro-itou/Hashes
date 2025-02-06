@@ -23,8 +23,35 @@
 
 #include    "HashesSettings.h"
 
+#include    <stddef.h>
+
 
 HASHES_NAMESPACE_BEGIN
+
+//========================================================================
+//
+//    Type Definitions.
+//
+
+//----------------------------------------------------------------
+/**
+**    エラーコード。
+**/
+
+enum class  ErrCode
+{
+    /**   正常終了。    **/
+    SUCCESS             = 0,
+
+    /**   異常終了。エラーの理由は不明または報告なし。  **/
+    FAILURE             = 1,
+
+    /**   ファイルオープンエラー。  **/
+    FILE_OPEN_ERROR     = 2,
+
+    /**   ファイル入出力エラー。    **/
+    FILE_IO_ERROR       = 3,
+};
 
 HASHES_NAMESPACE_END
 
