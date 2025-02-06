@@ -53,6 +53,23 @@ enum class  ErrCode
     FILE_IO_ERROR       = 3,
 };
 
+//========================================================================
+//
+//    安全なポインタ型のキャスト。
+//
+
+template  <typename  T>
+T  pointer_cast(void * const p)
+{
+    return  static_cast<T>(p);
+}
+
+template  <typename  T>
+T  pointer_cast(const void * const p)
+{
+    return  static_cast<T>(p);
+}
+
 HASHES_NAMESPACE_END
 
 #endif
