@@ -23,6 +23,7 @@
 
 #include    "HashesSettings.h"
 
+#include    <cstdint>
 #include    <stddef.h>
 
 
