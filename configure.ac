@@ -159,6 +159,7 @@ AC_CONFIG_FILES([
     Lib/Makefile
     Lib/.Config/Makefile
     Lib/Common/Makefile
+    Lib/MD5/Makefile
 ])
 
 AC_CONFIG_FILES([

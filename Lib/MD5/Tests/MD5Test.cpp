@@ -13,29 +13,7 @@
 *************************************************************************/
 
 /**
-**      プロジェクトの設定。
+**      An Implementation of Test Case 'MD5'.
 **
-**      @file       Common/SampleSettings.h
+**      @file       MD5/Tests/MD5Test.cpp
 **/
-
-#if !defined( HASHES_COMMON_INCLUDED_SAMPLE_SETTINGS_H )
-#    define   HASHES_COMMON_INCLUDED_SAMPLE_SETTINGS_H
-
-//  スクリプトによる設定値が書き込まれたヘッダを読み込む。  //
-#if defined( HASHES_USE_PRE_CONFIGURED_MSVC )
-#    include    "Hashes/.Config/PreConfigHashes.msvc.h"
-#else
-#    include    "Hashes/.Config/ConfiguredHashes.h"
-#endif
-
-HASHES_NAMESPACE_BEGIN
-
-/**
-**    ダミーの型宣言。
-**/
-
-typedef     int     CommonType;
-
-HASHES_NAMESPACE_END
-
-#endif

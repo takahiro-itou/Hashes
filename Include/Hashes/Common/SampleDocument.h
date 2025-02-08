@@ -21,7 +21,7 @@
 #if !defined( HASHES_COMMON_INCLUDED_SAMPLE_DOCUMENT_H )
 #    define   HASHES_COMMON_INCLUDED_SAMPLE_DOCUMENT_H
 
-#include    "SampleSettings.h"
+#include    "HashesSettings.h"
 
 #include    <string>
 

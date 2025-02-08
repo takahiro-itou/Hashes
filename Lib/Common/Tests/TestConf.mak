@@ -5,15 +5,14 @@
 
 extra_tests             =
 TESTS                   =  \
-        SampleDocumentTest      \
-        SampleSettingsTest      \
+        HashesSettingsTest      \
         ${extra_tests}
 
 ##
 ##    Test Configurations.
 ##
 
-target_testee_library       +=  -lsampleCommon
+target_testee_library       +=  -lhsCommon
 
 dist_noinst_data_files      +=
 dist_noinst_header_files    +=
@@ -32,5 +31,4 @@ test_ldflags_common         +=
 ##    Test Programs.
 ##
 
-SampleDocumentTest_SOURCES      =  SampleDocumentTest.cpp
-SampleSettingsTest_SOURCES      =  SampleSettingsTest.cpp
+HashesSettingsTest_SOURCES      =  HashesSettingsTest.cpp
