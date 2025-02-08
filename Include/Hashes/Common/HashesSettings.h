@@ -15,11 +15,11 @@
 /**
 **      プロジェクトの設定。
 **
-**      @file       Common/SampleSettings.h
+**      @file       Common/HashesSettings.h
 **/
 
-#if !defined( HASHES_COMMON_INCLUDED_SAMPLE_SETTINGS_H )
-#    define   HASHES_COMMON_INCLUDED_SAMPLE_SETTINGS_H
+#if !defined( HASHES_COMMON_INCLUDED_HASHES_SETTINGS_H )
+#    define   HASHES_COMMON_INCLUDED_HASHES_SETTINGS_H
 
 //  スクリプトによる設定値が書き込まれたヘッダを読み込む。  //
 #if defined( HASHES_USE_PRE_CONFIGURED_MSVC )
@@ -29,12 +29,6 @@
 #endif
 
 HASHES_NAMESPACE_BEGIN
-
-/**
-**    ダミーの型宣言。
-**/
-
-typedef     int     CommonType;
 
 HASHES_NAMESPACE_END
 

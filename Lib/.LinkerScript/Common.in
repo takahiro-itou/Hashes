@@ -1,4 +1,3 @@
 
 /*  Linker Script.  */
-INPUT( AS_NEEDED(Common/libsampleCommon.static.a) )
-
+INPUT( AS_NEEDED(Common/libhsCommon.static.a) )
