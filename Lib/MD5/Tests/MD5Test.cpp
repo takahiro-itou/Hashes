@@ -37,6 +37,7 @@ class  MD5Test : public  TestFixture
 {
     CPPUNIT_TEST_SUITE(MD5Test);
     CPPUNIT_TEST(testMD5);
+    CPPUNIT_TEST(testFinalizeHash);
     CPPUNIT_TEST(testInitializeHash);
     CPPUNIT_TEST_SUITE_END();
 
@@ -47,6 +48,7 @@ public:
 private:
     void  testMD5();
 
+    void  testFinalizeHash();
     void  testInitializeHash();
 
     typedef     MD5     TestTarget;
@@ -62,6 +64,28 @@ CPPUNIT_TEST_SUITE_REGISTRATION( MD5Test );
 void  MD5Test::testMD5()
 {
     TestTarget  testee;
+    return;
+}
+
+void  MD5Test::testFinalizeHash()
+{
+    TestTarget  testee;
+    TestTarget::MDCode  out;
+
+    CPPUNIT_ASSERT_EQUAL(ErrCode::SUCCESS, testee.initializeHash());
+    out = testee.finalizeHash();
+
+    //  MD5 test suite
+    //  MD5("") = d41d8cd98f00b204e9800998ecf8427e
+    //  1st: d4 1d 8c d9 = 0xd98c1dd4
+    //  2nd: 8f 00 b2 04 = 0x04b2008f
+    //  3rd: e9 80 09 98 = 0x980980e9
+    //  4th: ec f8 42 7e = 0x7e42f8ec
+    CPPUNIT_ASSERT_EQUAL(0xD98C1DD4U, out.words[0]);
+    CPPUNIT_ASSERT_EQUAL(0x04B2008FU, out.words[1]);
+    CPPUNIT_ASSERT_EQUAL(0x980980E9U, out.words[2]);
+    CPPUNIT_ASSERT_EQUAL(0x7E42F8ECU, out.words[3]);
+
     return;
 }
 
