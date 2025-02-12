@@ -17,3 +17,60 @@
 **
 **      @file       MD5/Tests/MD5Test.cpp
 **/
+
+#include    "TestDriver.h"
+#include    "Hashes/MD5/MD5.h"
+
+
+HASHES_NAMESPACE_BEGIN
+namespace  MD5  {
+
+//========================================================================
+//
+//    MD5Test  class.
+//
+/**
+**    クラス MD5  の単体テスト。
+**/
+
+class  MD5Test : public  TestFixture
+{
+    CPPUNIT_TEST_SUITE(MD5Test);
+    CPPUNIT_TEST(testMD5);
+    CPPUNIT_TEST_SUITE_END();
+
+public:
+    virtual  void   setUp()     override    { }
+    virtual  void   tearDown()  override    { }
+
+private:
+    void  testMD5();
+
+    typedef     MD5     TestTarget;
+};
+
+CPPUNIT_TEST_SUITE_REGISTRATION( MD5Test );
+
+//========================================================================
+//
+//    Tests.
+//
+
+void  MD5Test::testMD5()
+{
+    TestTarget  testee;
+    return;
+}
+
+}   //  End of namespace  MD5
+HASHES_NAMESPACE_END
+
+//========================================================================
+//
+//    エントリポイント。
+//
+
+int  main(int argc, char * argv[])
+{
+    return ( executeCppUnitTests(argc, argv) );
+}
