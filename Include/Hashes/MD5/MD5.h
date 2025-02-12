@@ -185,7 +185,7 @@ public:
     friend  class   MD5Test;
 };
 
-}   //  End of namespace  Common
+}   //  End of namespace  MD5
 HASHES_NAMESPACE_END
 
 #endif
