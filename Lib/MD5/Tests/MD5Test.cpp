@@ -37,6 +37,7 @@ class  MD5Test : public  TestFixture
 {
     CPPUNIT_TEST_SUITE(MD5Test);
     CPPUNIT_TEST(testMD5);
+    CPPUNIT_TEST(testInitializeHash);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -45,6 +46,8 @@ public:
 
 private:
     void  testMD5();
+
+    void  testInitializeHash();
 
     typedef     MD5     TestTarget;
 };
@@ -59,6 +62,14 @@ CPPUNIT_TEST_SUITE_REGISTRATION( MD5Test );
 void  MD5Test::testMD5()
 {
     TestTarget  testee;
+    return;
+}
+
+void  MD5Test::testInitializeHash()
+{
+    TestTarget  testee;
+
+    CPPUNIT_ASSERT_EQUAL(ErrCode::SUCCESS, testee.initializeHash());
     return;
 }
 
