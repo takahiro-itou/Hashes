@@ -172,6 +172,7 @@ dnl
 
 AC_CONFIG_FILES([
     Lib/Common/Tests/Makefile
+    Lib/MD5/Tests/Makefile
 ])
 
 dnl

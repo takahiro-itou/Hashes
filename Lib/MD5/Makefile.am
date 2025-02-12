@@ -8,7 +8,7 @@
 ##
 
 module_dir_name     =  MD5
-# SUBDIRS             =  .  Tests
+SUBDIRS             =  .  Tests
 
 include  $(top_srcdir)/.M4/BuildCommon/DirList.inc
 include  $(top_srcdir)/.M4/BuildCommon/DefVars.inc

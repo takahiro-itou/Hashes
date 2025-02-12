@@ -35,4 +35,4 @@ Include (${common_cmake_dir}/BuildCommon/Install.cmake)
 ##    テストの設定。
 ##
 
-# Add_SubDirectory (Tests)
+Add_SubDirectory (Tests)
