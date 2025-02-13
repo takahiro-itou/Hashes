@@ -112,6 +112,17 @@ void  MD5Test::testInitializeHash()
     TestTarget  testee;
 
     CPPUNIT_ASSERT_EQUAL(ErrCode::SUCCESS, testee.initializeHash());
+
+    //  初期化直後は以下の通り  RFC1321 Page4 (Little Endian)
+    //  word A: 01 23 45 67 = 0x67452301
+    //  word B: 89 ab cd ef = 0xefcdab89
+    //  word C: fe dc ba 98 = 0x98badcfe
+    //  word D: 76 54 32 10 = 0x10325476
+    CPPUNIT_ASSERT_EQUAL(0x67452301U, testee.m_context.regs[0]);
+    CPPUNIT_ASSERT_EQUAL(0xEFCDAB89U, testee.m_context.regs[1]);
+    CPPUNIT_ASSERT_EQUAL(0x98BADCFEU, testee.m_context.regs[2]);
+    CPPUNIT_ASSERT_EQUAL(0x10325476U, testee.m_context.regs[3]);
+
     return;
 }
 
