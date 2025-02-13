@@ -45,6 +45,7 @@ namespace  {
 //
 
 MD5::MD5()
+    : m_context()
 {
 }
 
@@ -89,7 +90,14 @@ MD5::~MD5()
 ErrCode
 MD5::initializeHash()
 {
-    return ( ErrCode::FAILURE );
+    this->m_context.regs[0] = 0;
+    this->m_context.regs[1] = 0;
+    this->m_context.regs[2] = 0;
+    this->m_context.regs[3] = 0;
+    this->m_context.numByte = 0;
+    memset(this->m_context.buffer, 0, sizeof(this->m_context.buffer));
+
+    return ( ErrCode::SUCCESS );
 }
 
 //----------------------------------------------------------------
@@ -101,7 +109,7 @@ MD5::updateHash(
         const   LpcReadBuf  inBuf,
         const   FileLength  cbBuf)
 {
-    return ( ErrCode::FAILURE );
+    return ( ErrCode::SUCCESS );
 }
 
 //----------------------------------------------------------------
