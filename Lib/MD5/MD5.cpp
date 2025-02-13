@@ -20,6 +20,8 @@
 
 #include    "Hashes/MD5/MD5.h"
 
+#include    <memory.h>
+
 
 HASHES_NAMESPACE_BEGIN
 namespace  MD5  {
