@@ -42,6 +42,13 @@ class  MD5Test : public  TestFixture
     CPPUNIT_TEST(testInitializeHash);
     CPPUNIT_TEST(testUpdateHash);
 
+    CPPUNIT_TEST(testHashValue1);
+    CPPUNIT_TEST(testHashValue2);
+    CPPUNIT_TEST(testHashValue3);
+    CPPUNIT_TEST(testHashValue4);
+    CPPUNIT_TEST(testHashValue5);
+    CPPUNIT_TEST(testHashValue6);
+
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -54,6 +61,13 @@ private:
     void  testFinalizeHash();
     void  testInitializeHash();
     void  testUpdateHash();
+
+    void  testHashValue1();
+    void  testHashValue2();
+    void  testHashValue3();
+    void  testHashValue4();
+    void  testHashValue5();
+    void  testHashValue6();
 
     typedef     MD5     TestTarget;
 };
@@ -126,6 +140,30 @@ void  MD5Test::testUpdateHash()
     CPPUNIT_ASSERT_EQUAL(0xD061F1AAU, out.words[3]);
 
     return;
+}
+
+void  MD5Test::testHashValue1()
+{
+}
+
+void  MD5Test::testHashValue2()
+{
+}
+
+void  MD5Test::testHashValue3()
+{
+}
+
+void  MD5Test::testHashValue4()
+{
+}
+
+void  MD5Test::testHashValue5()
+{
+}
+
+void  MD5Test::testHashValue6()
+{
 }
 
 }   //  End of namespace  MD5
