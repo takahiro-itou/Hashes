@@ -179,6 +179,26 @@ void  MD5Test::testHashValue1()
 
 void  MD5Test::testHashValue2()
 {
+    TestTarget  testee;
+    TestTarget::MDCode  out;
+
+    CPPUNIT_ASSERT_EQUAL(ErrCode::SUCCESS, testee.initializeHash());
+    CPPUNIT_ASSERT_EQUAL(
+            ErrCode::SUCCESS, testee.updateHash("abc", 3));
+    out = testee.finalizeHash();
+
+    //  MD5 test suite
+    //  MD5("abc") = 900150983cd24fb0d6963f7d28e17f72
+    //  1st: 90 01 50 98 = 0x98500190
+    //  2nd: 3c d2 4f b0 = 0xb04fd23c
+    //  3rd: d6 96 3f 7d = 0x7d3f96d6
+    //  4th: 28 e1 7f 72 = 0x727fe128
+    CPPUNIT_ASSERT_EQUAL(0x98500190U, out.words[0]);
+    CPPUNIT_ASSERT_EQUAL(0xB04FD23CU, out.words[1]);
+    CPPUNIT_ASSERT_EQUAL(0x7D3F96D6U, out.words[2]);
+    CPPUNIT_ASSERT_EQUAL(0x727FE128U, out.words[3]);
+
+    return;
 }
 
 void  MD5Test::testHashValue3()
