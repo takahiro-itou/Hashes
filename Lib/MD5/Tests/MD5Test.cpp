@@ -354,11 +354,18 @@ void  MD5Test::testHashValue7()
 
 void  MD5Test::testSinTable()
 {
-    uint32_t    work[64];
+    uint32_t    actual[64];
+    uint32_t    expect[64];
 
     for ( int i = 0; i < 64; ++ i ) {
         double  x = static_cast<double>(i);
-        work[i] = static_cast<uint32_t>( fabs(std::sin(x) ) * 4294967296);
+        expect[i] = static_cast<uint32_t>( fabs(std::sin(x) ) * 4294967296);
+    }
+
+    TestTarget::copySinTable(actual);
+
+    for ( int i = 0; i < 64; ++ i ) {
+        CPPUNIT_ASSERT_EQUAL(expect[i], actual[i]);
     }
 
     return;
