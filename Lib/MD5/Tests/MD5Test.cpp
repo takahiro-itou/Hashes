@@ -50,6 +50,8 @@ class  MD5Test : public  TestFixture
     CPPUNIT_TEST(testHashValue6);
     CPPUNIT_TEST(testHashValue7);
 
+    CPPUNIT_TEST(testSinTable);
+
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -70,6 +72,8 @@ private:
     void  testHashValue5();
     void  testHashValue6();
     void  testHashValue7();
+
+    void  testSinTable();
 
     typedef     MD5     TestTarget;
 };
@@ -342,6 +346,19 @@ void  MD5Test::testHashValue7()
     CPPUNIT_ASSERT_EQUAL(0x683FDF0CU, out.words[1]);
     CPPUNIT_ASSERT_EQUAL(0x93EA96D4U, out.words[2]);
     CPPUNIT_ASSERT_EQUAL(0x8B7E1344U, out.words[3]);
+
+    return;
+}
+
+void  MD5Test::testSinTable()
+{
+    uint32_t    work[64];
+
+    for ( int i = 0; i < 64; ++ i ) {
+        double  x = static_cast<double>(i);
+        work[i] = static_cast<uint32_t>( fabs(std::sin(x) ) * 4294967296);
+    }
+
 
     return;
 }
