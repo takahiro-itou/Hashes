@@ -48,6 +48,7 @@ class  MD5Test : public  TestFixture
     CPPUNIT_TEST(testHashValue4);
     CPPUNIT_TEST(testHashValue5);
     CPPUNIT_TEST(testHashValue6);
+    CPPUNIT_TEST(testHashValue7);
 
     CPPUNIT_TEST_SUITE_END();
 
@@ -68,6 +69,7 @@ private:
     void  testHashValue4();
     void  testHashValue5();
     void  testHashValue6();
+    void  testHashValue7();
 
     typedef     MD5     TestTarget;
 };
@@ -307,6 +309,39 @@ void  MD5Test::testHashValue6()
     CPPUNIT_ASSERT_EQUAL(0x55C9E32BU, out.words[1]);
     CPPUNIT_ASSERT_EQUAL(0x2EDA49ACU, out.words[2]);
     CPPUNIT_ASSERT_EQUAL(0x7AB60721U, out.words[3]);
+
+    return;
+}
+
+void  MD5Test::testHashValue7()
+{
+    TestTarget  testee;
+    TestTarget::MDCode  out;
+    const  char  MSG1[524288] = { 0 };
+
+    CPPUNIT_ASSERT_EQUAL(ErrCode::SUCCESS, testee.initializeHash());
+    CPPUNIT_ASSERT_EQUAL(
+            ErrCode::SUCCESS, testee.updateHash(MSG1, 1024));
+    CPPUNIT_ASSERT_EQUAL(
+            ErrCode::SUCCESS, testee.updateHash(MSG1 + 1024, 63));
+    CPPUNIT_ASSERT_EQUAL(
+            ErrCode::SUCCESS, testee.updateHash(MSG1 + 1087, 1024));
+    CPPUNIT_ASSERT_EQUAL(
+            ErrCode::SUCCESS, testee.updateHash(MSG1 + 2111, 1023));
+    CPPUNIT_ASSERT_EQUAL(
+            ErrCode::SUCCESS, testee.updateHash(MSG1 + 3134, 521154));
+    out = testee.finalizeHash();
+
+    //  MD5 test suite
+    //  bf619eac0cdf3f68d496ea9344137e8b
+    //  1st: bf 61 9e ac = 0xac9e61bf
+    //  2nd: 0c df 3f 68 = 0x683fdf0c
+    //  3rd: d4 96 ea 93 = 0x93ea96d4
+    //  4th: 44 13 7e 8b = 0x8b7e1344
+    CPPUNIT_ASSERT_EQUAL(0xAC9E61BFU, out.words[0]);
+    CPPUNIT_ASSERT_EQUAL(0x683FDF0CU, out.words[1]);
+    CPPUNIT_ASSERT_EQUAL(0x93EA96D4U, out.words[2]);
+    CPPUNIT_ASSERT_EQUAL(0x8B7E1344U, out.words[3]);
 
     return;
 }
