@@ -151,5 +151,17 @@ MD5::getHashValue()  const
 //    For Internal Use Only.
 //
 
+//----------------------------------------------------------------
+//    定数テーブルの内容をコピーする。
+//
+//    単体テストクラスにテーブルの値を渡して
+//  内容をチェックしてもらうための関数。
+//
+
+void
+MD5::copySinTable(uint32_t (&buf)[64])
+{
+}
+
 }   //  End of namespace  MD5
 HASHES_NAMESPACE_END
