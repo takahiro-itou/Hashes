@@ -21,6 +21,8 @@
 #include    "TestDriver.h"
 #include    "Hashes/MD5/MD5.h"
 
+#include    <cmath>
+
 
 HASHES_NAMESPACE_BEGIN
 namespace  MD5  {
@@ -358,7 +360,6 @@ void  MD5Test::testSinTable()
         double  x = static_cast<double>(i);
         work[i] = static_cast<uint32_t>( fabs(std::sin(x) ) * 4294967296);
     }
-
 
     return;
 }
