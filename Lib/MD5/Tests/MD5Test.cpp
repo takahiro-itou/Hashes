@@ -253,6 +253,31 @@ void  MD5Test::testHashValue4()
 
 void  MD5Test::testHashValue5()
 {
+    TestTarget  testee;
+    TestTarget::MDCode  out;
+    const  char  MSG1[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcde";
+    const  char  MSG2[] = "fghijklmnopqrstuvwxyz0123456789";
+
+    CPPUNIT_ASSERT_EQUAL(ErrCode::SUCCESS, testee.initializeHash());
+    CPPUNIT_ASSERT_EQUAL(
+            ErrCode::SUCCESS, testee.updateHash(MSG1, sizeof(MSG1) - 1));
+    CPPUNIT_ASSERT_EQUAL(
+            ErrCode::SUCCESS, testee.updateHash(MSG2, sizeof(MSG2) - 1));
+    out = testee.finalizeHash();
+
+    //  MD5 test suite
+    //  MD5("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789")
+    //  = d174ab98d277d9f5a5611c2c9f419d9f
+    //  1st: d1 74 ab 98 = 0x98ab74d1
+    //  2nd: d2 77 d9 f5 = 0xf5d977d2
+    //  3rd: a5 61 1c 2c = 0x2c1c61a5
+    //  4th: 9f 41 9d 9f = 0x9f9d419f
+    CPPUNIT_ASSERT_EQUAL(0x98AB74D1U, out.words[0]);
+    CPPUNIT_ASSERT_EQUAL(0xF5D977D2U, out.words[1]);
+    CPPUNIT_ASSERT_EQUAL(0x2C1C61A5U, out.words[2]);
+    CPPUNIT_ASSERT_EQUAL(0x9F9D419FU, out.words[3]);
+
+    return;
 }
 
 void  MD5Test::testHashValue6()
