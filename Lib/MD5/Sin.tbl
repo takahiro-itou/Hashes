@@ -84,4 +84,4 @@
 #define     SIN_4C  0xF7537E82
 #define     SIN_4D  0xBD3AF235
 #define     SIN_4E  0x2AD7D2BB
-#define     SIN_4F  0xEB88D391
+#define     SIN_4F  0xEB86D391
