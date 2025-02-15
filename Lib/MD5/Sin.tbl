@@ -68,3 +68,20 @@
 #define     SIN_3D  0xE6DB99E5
 #define     SIN_3E  0x1FA27CF8
 #define     SIN_3F  0xC4AC5665
+
+#define     SIN_40  0xF4292244
+#define     SIN_41  0x432AFF97
+#define     SIN_42  0xAB9423A7
+#define     SIN_43  0xFC93A039
+#define     SIN_44  0x655B59C3
+#define     SIN_45  0x8F0CCC92
+#define     SIN_46  0xFFEFF47D
+#define     SIN_47  0x85845DD1
+#define     SIN_48  0x6FA87E4F
+#define     SIN_49  0xFE2CE6E0
+#define     SIN_4A  0xA3014314
+#define     SIN_4B  0x4E0811A1
+#define     SIN_4C  0xF7537E82
+#define     SIN_4D  0xBD3AF245
+#define     SIN_4E  0x2AD7D2BB
+#define     SIN_4F  0xEB88D391
