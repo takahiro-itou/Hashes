@@ -40,6 +40,23 @@
 #define     SIN_1E  0xA679438E
 #define     SIN_1F  0x49B40821
 
+#define     SIN_20  0xF61E2562
+#define     SIN_21  0xC040B340
+#define     SIN_22  0x265E5A51
+#define     SIN_23  0xE9B6C7AA
+#define     SIN_24  0xD62F105D
+#define     SIN_25  0x02441453
+#define     SIN_26  0xD8A1E681
+#define     SIN_27  0xE7D3FBC8
+#define     SIN_28  0x21E1CDE6
+#define     SIN_29  0xC44707D6
+#define     SIN_2A  0xF4D50D87
+#define     SIN_2B  0x455A14ED
+#define     SIN_2C  0xA9E3E905
+#define     SIN_2D  0xFCEFA3F8
+#define     SIN_2E  0x676F02D9
+#define     SIN_2F  0x8D2A4C8A
+
 HASHES_NAMESPACE_BEGIN
 namespace  MD5  {
 
@@ -182,6 +199,11 @@ MD5::copySinTable(uint32_t (&buf)[64])
     buf[ 4] = SIN_14; buf[ 5] = SIN_15; buf[ 6] = SIN_16; buf[ 7] = SIN_17;
     buf[ 8] = SIN_18; buf[ 9] = SIN_19; buf[10] = SIN_1A; buf[11] = SIN_1B;
     buf[12] = SIN_1C; buf[13] = SIN_1D; buf[14] = SIN_1E; buf[15] = SIN_1F;
+
+    buf[16] = SIN_20; buf[17] = SIN_21; buf[18] = SIN_22; buf[19] = SIN_23;
+    buf[20] = SIN_24; buf[21] = SIN_25; buf[22] = SIN_26; buf[23] = SIN_27;
+    buf[24] = SIN_28; buf[25] = SIN_29; buf[26] = SIN_2A; buf[27] = SIN_2B;
+    buf[28] = SIN_2C; buf[29] = SIN_2D; buf[30] = SIN_2E; buf[31] = SIN_2F;
 }
 
 }   //  End of namespace  MD5
