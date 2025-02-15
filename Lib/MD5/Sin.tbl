@@ -44,7 +44,7 @@
 #define     SIN_26  0xD8A1E681
 #define     SIN_27  0xE7D3FBC8
 #define     SIN_28  0x21E1CDE6
-#define     SIN_29  0xC44707D6
+#define     SIN_29  0xC33707D6
 #define     SIN_2A  0xF4D50D87
 #define     SIN_2B  0x455A14ED
 #define     SIN_2C  0xA9E3E905
