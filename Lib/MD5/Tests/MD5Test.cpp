@@ -354,7 +354,7 @@ void  MD5Test::testHashValue7()
 
 void  MD5Test::testSinTable()
 {
-    uint32_t    actual[64];
+    uint32_t    actual[64] = { 0 };
     uint32_t    expect[64];
 
     for ( int i = 0; i < 64; ++ i ) {

@@ -23,6 +23,23 @@
 #include    <memory.h>
 
 
+#define     SIN_10  0xD76AA478
+#define     SIN_11  0xE8C7B756
+#define     SIN_12  0x242070DB
+#define     SIN_13  0xC1BDCEEE
+#define     SIN_14  0xF57C0FAF
+#define     SIN_15  0x4787C62A
+#define     SIN_16  0xA8304613
+#define     SIN_17  0xFD469501
+#define     SIN_18  0x698098D8
+#define     SIN_19  0x8B44F7AF
+#define     SIN_1A  0xFFFF5BB1
+#define     SIN_1B  0x895CD7BE
+#define     SIN_1C  0x6B901122
+#define     SIN_1D  0xFD987193
+#define     SIN_1E  0xA679438E
+#define     SIN_1F  0x49B40821
+
 HASHES_NAMESPACE_BEGIN
 namespace  MD5  {
 
@@ -161,6 +178,10 @@ MD5::getHashValue()  const
 void
 MD5::copySinTable(uint32_t (&buf)[64])
 {
+    buf[ 0] = SIN_10; buf[ 1] = SIN_11; buf[ 2] = SIN_12; buf[ 3] = SIN_13;
+    buf[ 4] = SIN_14; buf[ 5] = SIN_15; buf[ 6] = SIN_16; buf[ 7] = SIN_17;
+    buf[ 8] = SIN_18; buf[ 9] = SIN_19; buf[10] = SIN_1A; buf[11] = SIN_1B;
+    buf[12] = SIN_1C; buf[13] = SIN_1D; buf[14] = SIN_1E; buf[15] = SIN_1F;
 }
 
 }   //  End of namespace  MD5
