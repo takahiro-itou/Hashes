@@ -359,13 +359,33 @@ void  MD5Test::testSinTable()
 
     for ( int i = 0; i < 64; ++ i ) {
         double  x = static_cast<double>(i + 1);
-        expect[i] = static_cast<uint32_t>( fabs(std::sin(x) ) * 4294967296);
+        expect[i] = static_cast<uint32_t>(fabs(std::sin(x) ) * 4294967296);
     }
 
     TestTarget::copySinTable(actual);
 
-    for ( int i = 0; i < 64; ++ i ) {
-        CPPUNIT_ASSERT_EQUAL(expect[i], actual[i]);
+    //  Human Loop Unrolling.               //
+    //  ここで、ループを展開しておくと、    //
+    //  テーブルの記述にミスがあった場合    //
+    //  単体テストで表示される行番号から    //
+    //  ミスの箇所がある程度絞り込める。    //
+    for ( int i = 0; i < 64; i += 16 ) {
+        CPPUNIT_ASSERT_EQUAL(expect[i+ 0], actual[i+ 0]);
+        CPPUNIT_ASSERT_EQUAL(expect[i+ 1], actual[i+ 1]);
+        CPPUNIT_ASSERT_EQUAL(expect[i+ 2], actual[i+ 2]);
+        CPPUNIT_ASSERT_EQUAL(expect[i+ 3], actual[i+ 3]);
+        CPPUNIT_ASSERT_EQUAL(expect[i+ 4], actual[i+ 4]);
+        CPPUNIT_ASSERT_EQUAL(expect[i+ 5], actual[i+ 5]);
+        CPPUNIT_ASSERT_EQUAL(expect[i+ 6], actual[i+ 6]);
+        CPPUNIT_ASSERT_EQUAL(expect[i+ 7], actual[i+ 7]);
+        CPPUNIT_ASSERT_EQUAL(expect[i+ 8], actual[i+ 8]);
+        CPPUNIT_ASSERT_EQUAL(expect[i+ 9], actual[i+ 9]);
+        CPPUNIT_ASSERT_EQUAL(expect[i+10], actual[i+10]);
+        CPPUNIT_ASSERT_EQUAL(expect[i+11], actual[i+11]);
+        CPPUNIT_ASSERT_EQUAL(expect[i+12], actual[i+12]);
+        CPPUNIT_ASSERT_EQUAL(expect[i+13], actual[i+13]);
+        CPPUNIT_ASSERT_EQUAL(expect[i+14], actual[i+14]);
+        CPPUNIT_ASSERT_EQUAL(expect[i+15], actual[i+15]);
     }
 
     return;
