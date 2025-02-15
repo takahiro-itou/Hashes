@@ -168,6 +168,8 @@ MD5::copySinTable(uint32_t (&buf)[64])
         SIN_18, SIN_19, SIN_1A, SIN_1B, SIN_1C, SIN_1D, SIN_1E, SIN_1F,
         SIN_20, SIN_21, SIN_22, SIN_23, SIN_24, SIN_25, SIN_26, SIN_27,
         SIN_28, SIN_29, SIN_2A, SIN_2B, SIN_2C, SIN_2D, SIN_2E, SIN_2F,
+        SIN_30, SIN_31, SIN_32, SIN_33, SIN_34, SIN_35, SIN_36, SIN_37,
+        SIN_38, SIN_39, SIN_3A, SIN_3B, SIN_3C, SIN_3D, SIN_3E, SIN_3F,
     };
 
     for ( int i = 0; i < 64; ++ i ) {
