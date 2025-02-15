@@ -195,15 +195,18 @@ MD5::getHashValue()  const
 void
 MD5::copySinTable(uint32_t (&buf)[64])
 {
-    buf[ 0] = SIN_10; buf[ 1] = SIN_11; buf[ 2] = SIN_12; buf[ 3] = SIN_13;
-    buf[ 4] = SIN_14; buf[ 5] = SIN_15; buf[ 6] = SIN_16; buf[ 7] = SIN_17;
-    buf[ 8] = SIN_18; buf[ 9] = SIN_19; buf[10] = SIN_1A; buf[11] = SIN_1B;
-    buf[12] = SIN_1C; buf[13] = SIN_1D; buf[14] = SIN_1E; buf[15] = SIN_1F;
+    uint32_t    table[64] = {
+        SIN_10, SIN_11, SIN_12, SIN_13, SIN_14, SIN_15, SIN_16, SIN_17,
+        SIN_18, SIN_19, SIN_1A, SIN_1B, SIN_1C, SIN_1D, SIN_1E, SIN_1F,
+        SIN_20, SIN_21, SIN_22, SIN_23, SIN_24, SIN_25, SIN_26, SIN_27,
+        SIN_28, SIN_29, SIN_2A, SIN_2B, SIN_2C, SIN_2D, SIN_2E, SIN_2F,
+    };
 
-    buf[16] = SIN_20; buf[17] = SIN_21; buf[18] = SIN_22; buf[19] = SIN_23;
-    buf[20] = SIN_24; buf[21] = SIN_25; buf[22] = SIN_26; buf[23] = SIN_27;
-    buf[24] = SIN_28; buf[25] = SIN_29; buf[26] = SIN_2A; buf[27] = SIN_2B;
-    buf[28] = SIN_2C; buf[29] = SIN_2D; buf[30] = SIN_2E; buf[31] = SIN_2F;
+    for ( int i = 0; i < 64; ++ i ) {
+        buf[i]  = table[i];
+    }
+
+    return;
 }
 
 }   //  End of namespace  MD5
