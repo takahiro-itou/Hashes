@@ -130,8 +130,7 @@ MD5::updateHash(
 MD5::MDCode
 MD5::finalizeHash()
 {
-    MDCode  dummy = {};
-    return ( dummy );
+    return  getHashValue();
 }
 
 //----------------------------------------------------------------
@@ -141,8 +140,14 @@ MD5::finalizeHash()
 MD5::MDCode
 MD5::getHashValue()  const
 {
-    MDCode  dummy = {};
-    return ( dummy );
+    MDCode  output;
+
+    output.words[0] = this->m_context.regs[0];
+    output.words[1] = this->m_context.regs[1];
+    output.words[2] = this->m_context.regs[2];
+    output.words[3] = this->m_context.regs[3];
+
+    return ( output );
 }
 
 //========================================================================
