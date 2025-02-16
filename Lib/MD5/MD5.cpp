@@ -128,7 +128,7 @@ MD5::updateHash(
 
     size_t      cbCopy  = BLOCK_BYTES - bufPos;
     FileLength  remLen  = cbBuf;
-    if ( cbCopy < cbBuf ) {
+    if ( cbCopy <= cbBuf ) {
         memcpy(buffer + bufPos, lpInput, cbCopy);
         lpInput += cbCopy;
         remLen  -= cbCopy;
