@@ -261,6 +261,27 @@ MD5::processBlock(
     ROUND1(c, d, a, b, x, 14, 17, SIN_1E);
     ROUND1(b, c, d, a, x, 15, 22, SIN_1F);
 
+    //  ROUND2  //
+    ROUND2(a, b, c, d, x,  1,  5, SIN_20);
+    ROUND2(d, a, b, c, x,  6,  9, SIN_21);
+    ROUND2(c, d, a, b, x, 11, 14, SIN_22);
+    ROUND2(b, c, d, a, x,  0, 20, SIN_23);
+
+    ROUND2(a, b, c, d, x,  5,  5, SIN_24);
+    ROUND2(d, a, b, c, x, 10,  9, SIN_25);
+    ROUND2(c, d, a, b, x, 15, 14, SIN_26);
+    ROUND2(b, c, d, a, x,  4, 20, SIN_27);
+
+    ROUND2(a, b, c, d, x,  9,  5, SIN_28);
+    ROUND2(d, a, b, c, x, 14,  9, SIN_29);
+    ROUND2(c, d, a, b, x,  3  14, SIN_2A);
+    ROUND2(b, c, d, a, x,  8, 20, SIN_2B);
+
+    ROUND2(a, b, c, d, x, 13,  5, SIN_2C);
+    ROUND2(d, a, b, c, x,  2,  9, SIN_2D);
+    ROUND2(c, d, a, b, x,  7, 14, SIN_2E);
+    ROUND2(b, c, d, a, x, 12, 20, SIN_2F);
+
     //  このブロックの結果を引数 regs に加える  //
     regs[0] += a;
     regs[1] += b;
