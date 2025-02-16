@@ -274,13 +274,34 @@ MD5::processBlock(
 
     ROUND2(a, b, c, d, x,  9,  5, SIN_28);
     ROUND2(d, a, b, c, x, 14,  9, SIN_29);
-    ROUND2(c, d, a, b, x,  3  14, SIN_2A);
+    ROUND2(c, d, a, b, x,  3, 14, SIN_2A);
     ROUND2(b, c, d, a, x,  8, 20, SIN_2B);
 
     ROUND2(a, b, c, d, x, 13,  5, SIN_2C);
     ROUND2(d, a, b, c, x,  2,  9, SIN_2D);
     ROUND2(c, d, a, b, x,  7, 14, SIN_2E);
     ROUND2(b, c, d, a, x, 12, 20, SIN_2F);
+
+    //  ROUND3  //
+    ROUND3(a, b, c, d, x,  5,  4, SIN_30);
+    ROUND3(d, a, b, c, x,  8, 11, SIN_31);
+    ROUND3(c, d, a, b, x, 11, 16, SIN_32);
+    ROUND3(b, c, d, a, x, 14, 23, SIN_33);
+
+    ROUND3(a, b, c, d, x,  1,  4, SIN_34);
+    ROUND3(d, a, b, c, x,  4, 11, SIN_35);
+    ROUND3(c, d, a, b, x,  7, 16, SIN_36);
+    ROUND3(b, c, d, a, x, 10, 23, SIN_37);
+
+    ROUND3(a, b, c, d, x, 13,  4, SIN_38);
+    ROUND3(d, a, b, c, x,  0, 11, SIN_39);
+    ROUND3(c, d, a, b, x,  3, 16, SIN_3A);
+    ROUND3(b, c, d, a, x,  6, 23, SIN_3B);
+
+    ROUND3(a, b, c, d, x,  9,  4, SIN_3C);
+    ROUND3(d, a, b, c, x, 12, 11, SIN_3D);
+    ROUND3(c, d, a, b, x, 15, 16, SIN_3E);
+    ROUND3(b, c, d, a, x,  2, 23, SIN_3F);
 
     //  このブロックの結果を引数 regs に加える  //
     regs[0] += a;
