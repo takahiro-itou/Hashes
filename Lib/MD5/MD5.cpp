@@ -153,6 +153,25 @@ MD5::updateHash(
 MD5::MDCode
 MD5::finalizeHash()
 {
+    BtByte  bits[8];
+
+    FileLength  cbByte  = (this->m_context.numByte);
+    const   FileLength  cbBits  = (cbByte << 3);
+
+    bits[0] = ((cbBits      ) & 0xFF);
+    bits[1] = ((cbBits >>  8) & 0xFF);
+    bits[2] = ((cbBits >> 16) & 0xFF);
+    bits[3] = ((cbBits >> 24) & 0xFF);
+    bits[4] = ((cbBits >> 32) & 0xFF);
+    bits[5] = ((cbBits >> 40) & 0xFF);
+    bits[6] = ((cbBits >> 48) & 0xFF);
+    bits[7] = ((cbBits >> 56) & 0xFF);
+
+    //  パディングを実施。  //
+    cbByte  &= 0x3F;
+    const   FileLength  padLen  = (cbByte < 56) ? (56 - cbByte) : (120 - cbByte);
+    updateHash(s_tblPadding, padLen);
+
     return  getHashValue();
 }
 
