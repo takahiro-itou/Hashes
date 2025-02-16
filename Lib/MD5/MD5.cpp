@@ -204,6 +204,12 @@ MD5::copySinTable(uint32_t (&buf)[64])
 
 #define     ROTATE_LEFT(x, n)   ( ((x) << (n)) | ((x) >> (32 - (n))) )
 
+#define     ROUND_OPERATION(A, B, C, D, OPE, xk, s, sin)    {           \
+    (A) += OPE((B), (C), (D)) + (xk) + static_cast<EDWordType>(sin);    \
+    (A) = ROTATE_LEFT((A), (s));                                        \
+    (A) += (B);                                                         \
+}
+
 inline  void
 MD5::processBlock(
         const   LpcByteReadBuf  inBuf,
