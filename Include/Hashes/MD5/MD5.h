@@ -170,11 +170,41 @@ public:
 //
 //    For Internal Use Only.
 //
+private:
+
+    //----------------------------------------------------------------
+    /**   定数テーブルの内容をコピーする。
+    **
+    **    単体テストクラスにテーブルの値を渡して
+    **  内容をチェックしてもらうための関数。
+    **/
+    static  void
+    copySinTable(uint32_t (&buf)[64]);
+
+    //----------------------------------------------------------------
+    /**   指定した 16 ワードブロックを処理する。
+    **
+    **  @param [in]     inBuf
+    **  @param [in,out] regs
+    **  @return     void.
+    **/
+    static  inline  void
+    processBlock(
+            const   LpcByteReadBuf  inBuf,
+            MDWordType              regs[4]);
+
+    enum  {
+        BLOCK_BYTES = 64
+    };
 
 //========================================================================
 //
 //    Member Variables.
 //
+private:
+
+    /**   計算用バッファ。  **/
+    ContextRegister     m_context;
 
 //========================================================================
 //
