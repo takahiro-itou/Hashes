@@ -205,7 +205,7 @@ MD5::copySinTable(uint32_t (&buf)[64])
 #define     ROTATE_LEFT(x, n)   ( ((x) << (n)) | ((x) >> (32 - (n))) )
 
 #define     ROUND_OPERATION(A, B, C, D, OPE, xk, s, sin)    {           \
-    (A) += OPE((B), (C), (D)) + (xk) + static_cast<EDWordType>(sin);    \
+    (A) += OPE((B), (C), (D)) + (xk) + static_cast<MDWordType>(sin);    \
     (A) = ROTATE_LEFT((A), (s));                                        \
     (A) += (B);                                                         \
 }
@@ -239,6 +239,27 @@ MD5::processBlock(
                         | (static_cast<MDWordType>(inBuf[j + 2]) << 16)
                         | (static_cast<MDWordType>(inBuf[j + 3]) << 24);
     }
+
+    //  ROUND1  //
+    ROUND1(a, b, c, d, x,  0,  7, SIN_10);
+    ROUND1(d, a, b, c, x,  1, 12, SIN_11);
+    ROUND1(c, d, a, b, x,  2, 17, SIN_12);
+    ROUND1(b, c, d, a, x,  3, 22, SIN_13);
+
+    ROUND1(a, b, c, d, x,  4,  7, SIN_14);
+    ROUND1(d, a, b, c, x,  5, 12, SIN_15);
+    ROUND1(c, d, a, b, x,  6, 17, SIN_16);
+    ROUND1(b, c, d, a, x,  7, 22, SIN_17);
+
+    ROUND1(a, b, c, d, x,  8,  7, SIN_18);
+    ROUND1(d, a, b, c, x,  9, 12, SIN_19);
+    ROUND1(c, d, a, b, x, 10, 17, SIN_1A);
+    ROUND1(b, c, d, a, x, 11, 22, SIN_1B);
+
+    ROUND1(a, b, c, d, x, 12,  7, SIN_1C);
+    ROUND1(d, a, b, c, x, 13, 12, SIN_1D);
+    ROUND1(c, d, a, b, x, 14, 17, SIN_1E);
+    ROUND1(b, c, d, a, x, 15, 22, SIN_1F);
 
     //  このブロックの結果を引数 regs に加える  //
     regs[0] += a;
