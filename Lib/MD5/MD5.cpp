@@ -202,6 +202,8 @@ MD5::copySinTable(uint32_t (&buf)[64])
 #define     H(x, y, z)  ( (x) ^ (y) ^ (z) )
 #define     I(x, y, z)  ( (y) ^ ((x) | (~(z))) )
 
+#define     ROTATE_LEFT(x, n)   ( ((x) << (n)) | ((x) >> (32 - (n))) )
+
 inline  void
 MD5::processBlock(
         const   LpcByteReadBuf  inBuf,
