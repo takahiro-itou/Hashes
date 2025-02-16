@@ -120,6 +120,29 @@ MD5::updateHash(
         const   LpcReadBuf  inBuf,
         const   FileLength  cbBuf)
 {
+    LpcByteReadBuf  lpInput = static_cast<LpcByteReadBuf>(inBuf);
+    LpByteWriteBuf  buffer  = this->m_context.buffer;
+
+    FileLength  bufPos  = ((this->m_context.numByte) & 0x3F);
+    this->m_context.numByte += cbBuf;
+
+    size_t      cbCopy  = BLOCK_BYTES - bufPos;
+    FileLength  remLen  = cbBuf;
+    if ( cbCopy < cbBuf ) {
+        memcpy(buffer + bufPos, lpInput, cbCopy);
+        lpInput += cbCopy;
+        remLen  -= cbCopy;
+        bufPos  = 0;
+        processBlock(buffer, this->m_context.regs);
+    }
+
+    for ( ; remLen >= BLOCK_BYTES ;
+            lpInput += BLOCK_BYTES, remLen -= BLOCK_BYTES )
+    {
+        processBlock(lpInput, this->m_context.regs);
+    }
+
+    memcpy(buffer + bufPos, lpInput, remLen);
     return ( ErrCode::SUCCESS );
 }
 
