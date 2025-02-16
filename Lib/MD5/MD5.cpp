@@ -197,6 +197,11 @@ MD5::copySinTable(uint32_t (&buf)[64])
 //    指定した 16 ワードブロックを処理する。
 //
 
+#define     F(x, y, z)  ( ((x) & (y)) | ((~(x)) & (z)) )
+#define     G(x, y, z)  ( ((x) & (z)) | ((y) & (~(z))) )
+#define     H(x, y, z)  ( (x) ^ (y) ^ (z) )
+#define     I(x, y, z)  ( (y) ^ ((x) | (~(z))) )
+
 inline  void
 MD5::processBlock(
         const   LpcByteReadBuf  inBuf,
