@@ -172,6 +172,9 @@ MD5::finalizeHash()
     const   FileLength  padLen  = (cbByte < 56) ? (56 - cbByte) : (120 - cbByte);
     updateHash(s_tblPadding, padLen);
 
+    //  パディング前のビット数を追加。  //
+    updateHash(bits, sizeof(bits));
+
     return  getHashValue();
 }
 
