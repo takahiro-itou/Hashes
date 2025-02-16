@@ -51,6 +51,7 @@ class  MD5Test : public  TestFixture
     CPPUNIT_TEST(testHashValue5);
     CPPUNIT_TEST(testHashValue6);
     CPPUNIT_TEST(testHashValue7);
+    CPPUNIT_TEST(testHashValue8);
 
     CPPUNIT_TEST(testSinTable);
 
@@ -74,6 +75,7 @@ private:
     void  testHashValue5();
     void  testHashValue6();
     void  testHashValue7();
+    void  testHashValue8();
 
     void  testSinTable();
 
@@ -323,6 +325,31 @@ void  MD5Test::testHashValue7()
 {
     TestTarget  testee;
     TestTarget::MDCode  out;
+    const  char  MSG1[512] = { 0 };
+
+    CPPUNIT_ASSERT_EQUAL(ErrCode::SUCCESS, testee.initializeHash());
+    CPPUNIT_ASSERT_EQUAL(
+            ErrCode::SUCCESS, testee.updateHash(MSG1, 512));
+    out = testee.finalizeHash();
+
+    //  MD5 test suite
+    //  bf619eac0cdf3f68d496ea9344137e8b
+    //  1st: bf 61 9e ac = 0xac9e61bf
+    //  2nd: 0c df 3f 68 = 0x683fdf0c
+    //  3rd: d4 96 ea 93 = 0x93ea96d4
+    //  4th: 44 13 7e 8b = 0x8b7e1344
+    CPPUNIT_ASSERT_EQUAL(0xAC9E61BFU, out.words[0]);
+    CPPUNIT_ASSERT_EQUAL(0x683FDF0CU, out.words[1]);
+    CPPUNIT_ASSERT_EQUAL(0x93EA96D4U, out.words[2]);
+    CPPUNIT_ASSERT_EQUAL(0x8B7E1344U, out.words[3]);
+
+    return;
+}
+
+void  MD5Test::testHashValue8()
+{
+    TestTarget  testee;
+    TestTarget::MDCode  out;
     const  char  MSG1[524288] = { 0 };
 
     CPPUNIT_ASSERT_EQUAL(ErrCode::SUCCESS, testee.initializeHash());
@@ -339,15 +366,15 @@ void  MD5Test::testHashValue7()
     out = testee.finalizeHash();
 
     //  MD5 test suite
-    //  bf619eac0cdf3f68d496ea9344137e8b
-    //  1st: bf 61 9e ac = 0xac9e61bf
-    //  2nd: 0c df 3f 68 = 0x683fdf0c
-    //  3rd: d4 96 ea 93 = 0x93ea96d4
-    //  4th: 44 13 7e 8b = 0x8b7e1344
-    CPPUNIT_ASSERT_EQUAL(0xAC9E61BFU, out.words[0]);
-    CPPUNIT_ASSERT_EQUAL(0x683FDF0CU, out.words[1]);
-    CPPUNIT_ASSERT_EQUAL(0x93EA96D4U, out.words[2]);
-    CPPUNIT_ASSERT_EQUAL(0x8B7E1344U, out.words[3]);
+    //  59071590099d21dd439896592338bf95
+    //  1st: 59 07 15 90 = 0x90150759
+    //  2nd: 09 9d 21 dd = 0xdd219d09
+    //  3rd: 43 98 96 59 = 0x59969843
+    //  4th: 23 38 bf 95 = 0x95bf3823
+    CPPUNIT_ASSERT_EQUAL(0x90150759U, out.words[0]);
+    CPPUNIT_ASSERT_EQUAL(0xDD219D09U, out.words[1]);
+    CPPUNIT_ASSERT_EQUAL(0x59969843U, out.words[2]);
+    CPPUNIT_ASSERT_EQUAL(0x95BF3823U, out.words[3]);
 
     return;
 }
