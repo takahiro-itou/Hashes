@@ -30,6 +30,13 @@ namespace  MD5  {
 
 namespace  {
 
+const   BtByte  s_tblPadding[64] = {
+    0x80, 0, 0, 0,  0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,
+    0, 0, 0, 0,     0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,
+    0, 0, 0, 0,     0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,
+    0, 0, 0, 0,     0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0
+};
+
 }   //  End of (Unnamed) namespace.
 
 
@@ -94,10 +101,10 @@ MD5::~MD5()
 ErrCode
 MD5::initializeHash()
 {
-    this->m_context.regs[0] = 0;
-    this->m_context.regs[1] = 0;
-    this->m_context.regs[2] = 0;
-    this->m_context.regs[3] = 0;
+    this->m_context.regs[0] = 0x67452301;
+    this->m_context.regs[1] = 0xEFCDAB89;
+    this->m_context.regs[2] = 0x98BADCFE;
+    this->m_context.regs[3] = 0x10325476;
     this->m_context.numByte = 0;
     memset(this->m_context.buffer, 0, sizeof(this->m_context.buffer));
 
