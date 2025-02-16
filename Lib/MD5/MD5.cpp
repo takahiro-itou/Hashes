@@ -199,9 +199,28 @@ MD5::copySinTable(uint32_t (&buf)[64])
 
 inline  void
 MD5::processBlock(
-        const   LpcByteReadBuf  inbuf,
+        const   LpcByteReadBuf  inBuf,
         MDWordType              regs[4])
 {
+    MDWordType  x[16];
+    MDWordType  a = regs[0];
+    MDWordType  b = regs[1];
+    MDWordType  c = regs[2];
+    MDWordType  d = regs[3];
+
+    for ( int idx = 0, j = 0; idx < 16; ++ idx, j += 4 ) {
+        x[idx]  = static_cast<MDWordType>(inBuf[j])
+                        | (static_cast<MDWordType>(inBuf[j + 1]) <<  8)
+                        | (static_cast<MDWordType>(inBuf[j + 2]) << 16)
+                        | (static_cast<MDWordType>(inBuf[j + 3]) << 24);
+    }
+
+    //  このブロックの結果を引数 regs に加える  //
+    regs[0] += a;
+    regs[1] += b;
+    regs[2] += c;
+    regs[3] += d;
+    return;
 }
 
 }   //  End of namespace  MD5

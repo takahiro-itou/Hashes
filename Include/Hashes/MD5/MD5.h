@@ -190,7 +190,7 @@ private:
     **/
     static  inline  void
     processBlock(
-            const   LpcByteReadBuf  inbuf,
+            const   LpcByteReadBuf  inBuf,
             MDWordType              regs[4]);
 
     enum  {
