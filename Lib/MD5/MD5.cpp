@@ -193,5 +193,16 @@ MD5::copySinTable(uint32_t (&buf)[64])
     return;
 }
 
+//----------------------------------------------------------------
+//    指定した 16 ワードブロックを処理する。
+//
+
+inline  void
+MD5::processBlock(
+        const   LpcByteReadBuf  inbuf,
+        MDWordType              regs[4])
+{
+}
+
 }   //  End of namespace  MD5
 HASHES_NAMESPACE_END

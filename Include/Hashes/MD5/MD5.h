@@ -181,6 +181,22 @@ private:
     static  void
     copySinTable(uint32_t (&buf)[64]);
 
+    //----------------------------------------------------------------
+    /**   指定した 16 ワードブロックを処理する。
+    **
+    **  @param [in]     inBuf
+    **  @param [in,out] regs
+    **  @return     void.
+    **/
+    static  inline  void
+    processBlock(
+            const   LpcByteReadBuf  inbuf,
+            MDWordType              regs[4]);
+
+    enum  {
+        BLOCK_BYTES = 64
+    };
+
 //========================================================================
 //
 //    Member Variables.
