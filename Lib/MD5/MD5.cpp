@@ -210,6 +210,18 @@ MD5::copySinTable(uint32_t (&buf)[64])
     (A) += (B);                                                         \
 }
 
+#define     ROUND1(A, B, C, D, X, k, s, sin)    \
+    ROUND_OPERATION(A, B, C, D, F, X[k], s, sin)
+
+#define     ROUND2(A, B, C, D, X, k, s, sin)    \
+    ROUND_OPERATION(A, B, C, D, G, X[k], s, sin)
+
+#define     ROUND3(A, B, C, D, X, k, s, sin)    \
+    ROUND_OPERATION(A, B, C, D, H, X[k], s, sin)
+
+#define     ROUND4(A, B, C, D, X, k, s, sin)    \
+    ROUND_OPERATION(A, B, C, D, I, X[k], s, sin)
+
 inline  void
 MD5::processBlock(
         const   LpcByteReadBuf  inBuf,
