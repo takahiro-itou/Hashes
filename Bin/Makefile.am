@@ -35,7 +35,7 @@ AM_LDFLAGS              =  -L${libtop_binary_dir}
 ##
 
 bin_PROGRAMS            =  \
-        SampleApplication
+        md5-driver
 
 dist_noinst_DATA        =  \
         CMakeLists.txt
@@ -44,5 +44,6 @@ dist_noinst_DATA        =  \
 ##    Build Executables.
 ##
 
-SampleApplication_SOURCES   =  SampleApplication.cpp
-SampleApplication_LDADD     =  -lhsMD5
+md5_driver_SOURCES      =  MD5Driver.cpp
+md5_driver_LDADD        =  -lhsMD5
+
