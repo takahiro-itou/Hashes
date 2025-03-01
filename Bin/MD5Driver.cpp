@@ -22,16 +22,21 @@
 
 #include    <getopt.h>
 #include    <iostream>
+#include    <string>
+#include    <vector>
 
 
 using   namespace   HASHES_NAMESPACE;
 
+
+typedef     std::vector<std::string>    FileList
 
 struct  AppOpts  {
     Boolean     binaryMode;
     Boolean     textMode;
     Boolean     checkMode;
     Boolean     flagIgnore;
+    FileList    fileNames;
 };
 
 int  main(int argc, char * argv[])
@@ -88,8 +93,7 @@ int  main(int argc, char * argv[])
     }
 
     for ( ; optind < argc; ++ optind ) {
-        std::cout   <<  "non-option :"
-                    <<  argv[optind]    <<  std::endl;
+        appOpts.fileNames.push_back(argv[optind]);
     }
 
     return ( 0 );
