@@ -29,7 +29,7 @@
 using   namespace   HASHES_NAMESPACE;
 
 
-typedef     std::vector<std::string>    FileList
+typedef     std::vector<std::string>    FileList;
 
 struct  AppOpts  {
     Boolean     binaryMode;
