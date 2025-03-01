@@ -49,8 +49,13 @@ int  main(int argc, char * argv[])
     int     c;
     int     lo_index;
 
-    while ( (c = getopt_long(argc, argv, "bct", long_opts, &lo_index)) != -1 )
-    {
+    for (;;) {
+        c = getopt_long(
+                argc, argv, "bct", long_opts, &lo_index);
+        if ( c == -1 ) {
+            break;
+        }
+
         switch ( c ) {
         case  0:
             switch ( lo_index ) {
