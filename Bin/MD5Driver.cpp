@@ -26,6 +26,14 @@
 
 using   namespace   HASHES_NAMESPACE;
 
+
+struct  AppOpts  {
+    int         binaryMode;
+    int         textMode;
+    int         checkMode;
+    int         flagIgnore;
+};
+
 int  main(int argc, char * argv[])
 {
     static struct option long_opts[] = {
@@ -35,6 +43,7 @@ int  main(int argc, char * argv[])
         { "ignore-missing", no_argument, 0, 0 },
         { 0, 0, 0, 0 },
     };
+    AppOpts appOpts;
     int     c;
     int     lo_index;
 
