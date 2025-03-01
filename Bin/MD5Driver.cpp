@@ -28,10 +28,10 @@ using   namespace   HASHES_NAMESPACE;
 
 
 struct  AppOpts  {
-    int         binaryMode;
-    int         textMode;
-    int         checkMode;
-    int         flagIgnore;
+    Boolean     binaryMode;
+    Boolean     textMode;
+    Boolean     checkMode;
+    Boolean     flagIgnore;
 };
 
 int  main(int argc, char * argv[])
@@ -53,7 +53,7 @@ int  main(int argc, char * argv[])
         case  0:
             switch ( lo_index ) {
             case  3:
-                std::cout   <<  "option: ignore-missing"    <<  std::endl;
+                appOpts.flagIgnore  = BOOL_TRUE;
                 break;
             default:
                 std::cerr   <<  "unknown option."   <<  std::endl;
@@ -61,13 +61,13 @@ int  main(int argc, char * argv[])
             }
             break;
         case  'b':
-            std::cout   <<  "option: -b (--binary)" <<  std::endl;
+            appOpts.binaryMode  = BOOL_TRUE;
             break;
         case  'c':
-            std::cout   <<  "option: -c (--check)"  <<  std::endl;
+            appOpts.checkMode   = BOOL_TRUE;
             break;
         case  't':
-            std::cout   <<  "option: -t (--text)"   <<  std::endl;
+            appOpts.textMode    = BOOL_TRUE;
             break;
         default:
             std::cerr   <<  "Invalid Option:"
