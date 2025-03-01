@@ -36,6 +36,8 @@ struct  AppOpts  {
     Boolean     textMode;
     Boolean     checkMode;
     Boolean     flagIgnore;
+    FileLength  pauseSize;
+    Boolean     flagResume;
     FileList    fileNames;
 };
 
@@ -81,6 +83,7 @@ int  main(int argc, char * argv[])
         case  'p':
             break;
         case  'r':
+            appOpts.flagResume  = BOOL_TRUE;
             break;
         case  't':
             appOpts.textMode    = BOOL_TRUE;
