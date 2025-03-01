@@ -28,8 +28,7 @@
 
 using   namespace   HASHES_NAMESPACE;
 
-
-typedef     std::vector<std::string>    FileList;
+typedef     std::vector<std::string>    StringArray;
 
 struct  AppOpts  {
     Boolean     binaryMode;
@@ -38,7 +37,17 @@ struct  AppOpts  {
     Boolean     flagIgnore;
     FileLength  pauseSize;
     Boolean     flagResume;
-    FileList    fileNames;
+    StringArray targetFiles;
+
+    AppOpts()
+        : binaryMode(BOOL_FALSE),
+          textMode(BOOL_FALSE),
+          checkMode(BOOL_FALSE),
+          flagIgnore(BOOL_FALSE),
+          pauseSize(0),
+          flagResume(BOOL_FALSE),
+          targetFiles()
+    { }
 };
 
 int  main(int argc, char * argv[])
@@ -96,7 +105,7 @@ int  main(int argc, char * argv[])
     }
 
     for ( ; optind < argc; ++ optind ) {
-        appOpts.fileNames.push_back(argv[optind]);
+        appOpts.targetFiles.push_back(argv[optind]);
     }
 
     return ( 0 );
