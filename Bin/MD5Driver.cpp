@@ -37,10 +37,10 @@ struct  AppOpts  {
 int  main(int argc, char * argv[])
 {
     static struct option long_opts[] = {
-        { "binary", no_argument, 0, 'b' },
-        { "check",  no_argument, 0, 'c' },
-        { "text" ,  no_argument, 0, 't' },
-        { "ignore-missing", no_argument, 0, 0 },
+        { "binary", no_argument, nullptr, 'b' },
+        { "check",  no_argument, nullptr, 'c' },
+        { "text" ,  no_argument, nullptr, 't' },
+        { "ignore-missing", no_argument, nullptr, 0 },
         { 0, 0, 0, 0 },
     };
     AppOpts appOpts;
