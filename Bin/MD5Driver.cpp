@@ -41,6 +41,8 @@ int  main(int argc, char * argv[])
         { "check",  no_argument, nullptr, 'c' },
         { "text" ,  no_argument, nullptr, 't' },
         { "ignore-missing", no_argument, nullptr, 0 },
+        { "pause",  required_argument, nullptr, 'p' },
+        { "resume", no_argument, nullptr, 'r' },
         { 0, 0, 0, 0 },
     };
     AppOpts appOpts;
@@ -65,6 +67,10 @@ int  main(int argc, char * argv[])
             break;
         case  'c':
             appOpts.checkMode   = BOOL_TRUE;
+            break;
+        case  'p':
+            break;
+        case  'r':
             break;
         case  't':
             appOpts.textMode    = BOOL_TRUE;
