@@ -59,6 +59,7 @@ int  main(int argc, char * argv[])
         { "ignore-missing", no_argument, nullptr, 0 },
         { "pause",  required_argument, nullptr, 'p' },
         { "resume", no_argument, nullptr, 'r' },
+        { "buffer-size", required_argument, nullptr, 's' },
         { 0, 0, 0, 0 },
     };
     AppOpts appOpts;
@@ -93,6 +94,8 @@ int  main(int argc, char * argv[])
             break;
         case  'r':
             appOpts.flagResume  = BOOL_TRUE;
+            break;
+        case  's':
             break;
         case  't':
             appOpts.textMode    = BOOL_TRUE;
