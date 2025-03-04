@@ -19,6 +19,7 @@
 **/
 
 #include    "Hashes/MD5/MD5.h"
+#include    "Hashes/Common/AppOpts.h"
 
 #include    <getopt.h>
 #include    <iostream>
@@ -27,28 +28,6 @@
 
 
 using   namespace   HASHES_NAMESPACE;
-
-typedef     std::vector<std::string>    StringArray;
-
-struct  AppOpts  {
-    Boolean     binaryMode;
-    Boolean     textMode;
-    Boolean     checkMode;
-    Boolean     flagIgnore;
-    FileLength  pauseSize;
-    Boolean     flagResume;
-    StringArray targetFiles;
-
-    AppOpts()
-        : binaryMode(BOOL_FALSE),
-          textMode(BOOL_FALSE),
-          checkMode(BOOL_FALSE),
-          flagIgnore(BOOL_FALSE),
-          pauseSize(0),
-          flagResume(BOOL_FALSE),
-          targetFiles()
-    { }
-};
 
 int  main(int argc, char * argv[])
 {

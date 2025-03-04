@@ -43,6 +43,28 @@ HASHES_NAMESPACE_BEGIN
 //    Type Definitions.
 //
 
+typedef     std::vector<std::string>    StringArray;
+
+struct  AppOpts  {
+    Boolean     binaryMode;
+    Boolean     textMode;
+    Boolean     checkMode;
+    Boolean     flagIgnore;
+    FileLength  pauseSize;
+    Boolean     flagResume;
+    StringArray targetFiles;
+
+    AppOpts()
+        : binaryMode(BOOL_FALSE),
+          textMode(BOOL_FALSE),
+          checkMode(BOOL_FALSE),
+          flagIgnore(BOOL_FALSE),
+          pauseSize(0),
+          flagResume(BOOL_FALSE),
+          targetFiles()
+    { }
+};
+
 HASHES_NAMESPACE_END
 
 #endif
