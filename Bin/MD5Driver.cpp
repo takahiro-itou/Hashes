@@ -41,8 +41,8 @@ int  main(int argc, char * argv[])
         { "buffer-size", required_argument, nullptr, 's' },
         { 0, 0, 0, 0 },
     };
-    AppOpts appOpts;
-    parseCommandLineArgs(argc, argv, &appOpts);
+    Common::AppOpts     appOpts;
+    Common::parseCommandLineArgs(argc, argv, &appOpts);
 
     int     c;
     int     lo_index;

@@ -37,6 +37,8 @@
 
 
 HASHES_NAMESPACE_BEGIN
+namespace  Common  {
+
 
 //========================================================================
 //
@@ -79,6 +81,7 @@ parseCommandLineArgs(
         AppOpts  *  pAppOpts);
 
 
+}   //  End of namespace  Common
 HASHES_NAMESPACE_END
 
 #endif
