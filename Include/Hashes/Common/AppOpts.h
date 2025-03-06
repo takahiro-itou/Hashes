@@ -22,7 +22,7 @@
 #    define   HASHES_COMMON_INCLUDED_APP_OPTS_H
 
 #if !defined( HASHES_COMMON_INCLUDED_HASHES_TYPES_H )
-#    include    "HashesSettings.h"
+#    include    "HashesTypes.h"
 #endif
 
 #if !defined( HASHES_SYS_INCLUDED_STRING )
