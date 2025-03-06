@@ -65,6 +65,20 @@ struct  AppOpts  {
     { }
 };
 
+//========================================================================
+
+//----------------------------------------------------------------
+/**   コマンドライン引数を解析する。
+**
+**/
+
+ErrCode
+parseCommandLineArgs(
+        const  int  argc,
+        char *      argv[],
+        AppOpts  *  pAppOpts);
+
+
 HASHES_NAMESPACE_END
 
 #endif

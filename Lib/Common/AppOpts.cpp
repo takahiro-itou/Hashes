@@ -29,5 +29,18 @@ namespace  {
 }   //  End of (Unnamed) namespace.
 
 
+//----------------------------------------------------------------
+//    コマンドライン引数を解析する。
+//
+
+ErrCode
+parseCommandLineArgs(
+        const  int  argc,
+        char *      argv[],
+        AppOpts  *  pAppOpts)
+{
+    return ( ErrCode::SUCCESS );
+}
+
 }   //  End of namespace  Common
 HASHES_NAMESPACE_END
