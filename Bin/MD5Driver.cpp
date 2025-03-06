@@ -42,6 +42,8 @@ int  main(int argc, char * argv[])
         { 0, 0, 0, 0 },
     };
     AppOpts appOpts;
+    parseCommandLineArgs(argc, argv, &appOpts);
+
     int     c;
     int     lo_index;
 
