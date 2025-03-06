@@ -22,6 +22,10 @@ set(inclib_header_files
         ${inclib_source_dir}/MD5.h
 )
 
+set(module_needs_libraries
+        ${project_target_prefix}Common
+)
+
 ##----------------------------------------------------------------
 ##
 ##    ビルドとインストールの設定。
