@@ -31,6 +31,9 @@ using   namespace   HASHES_NAMESPACE;
 
 int  main(int argc, char * argv[])
 {
+    Common::AppOpts     appOpts;
+    Common::parseCommandLineArgs(appOpts, argc, argv);
+
     static struct option long_opts[] = {
         { "binary", no_argument, nullptr, 'b' },
         { "check",  no_argument, nullptr, 'c' },
@@ -41,8 +44,6 @@ int  main(int argc, char * argv[])
         { "buffer-size", required_argument, nullptr, 's' },
         { 0, 0, 0, 0 },
     };
-    Common::AppOpts     appOpts;
-    Common::parseCommandLineArgs(argc, argv, &appOpts);
 
     int     c;
     int     lo_index;

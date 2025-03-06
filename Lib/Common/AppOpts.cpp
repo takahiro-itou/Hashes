@@ -35,9 +35,9 @@ namespace  {
 
 ErrCode
 parseCommandLineArgs(
+        AppOpts   & appOpts,
         const  int  argc,
-        char *      argv[],
-        AppOpts  *  pAppOpts)
+        char *      argv[])
 {
     return ( ErrCode::SUCCESS );
 }

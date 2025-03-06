@@ -76,10 +76,9 @@ struct  AppOpts  {
 
 ErrCode
 parseCommandLineArgs(
+        AppOpts   & appOpts,
         const  int  argc,
-        char *      argv[],
-        AppOpts  *  pAppOpts);
-
+        char *      argv[]);
 
 }   //  End of namespace  Common
 HASHES_NAMESPACE_END
