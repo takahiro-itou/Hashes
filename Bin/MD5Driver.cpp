@@ -34,14 +34,31 @@ computeHash(
 {
     MD5::MD5            hash;
     MD5::MD5::MDCode    reg;
-    char                buf[16];
+    BtByte              inbuf[1024];
+    char                buf[32];
 
     hash.initializeHash();
+
+    FILE *  fp  = fopen(fileName.c_str(), "rb");
+    if ( fp != nullptr ) {
+        std::cerr   <<  "File not found:"
+                    <<  fileName    <<  std::endl;
+        return;
+    }
+
+    size_t  cbRead  = 1024;
+    while ( cbRead ) {
+        cbRead  = fread(inbuf, sizeof(BtByte), 1024, fp);
+        if ( cbRead == 0 ) {
+            break;
+        }
+        hash.updateHash(inbuf, cbRead);
+    }
     reg = hash.finalizeHash();
 
     for ( int i = 0; i < 4; ++ i ) {
         const  MD5::MD5::MDWordType val = reg.words[i];
-        sprintf(buf + (i << 2),
+        sprintf(buf + (i << 3),
                 "%02x%02x%02x%02x",
                 ((val      ) & 0xFF),
                 ((val >>  8) & 0xFF),
