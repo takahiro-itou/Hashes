@@ -128,7 +128,7 @@ MD5::updateHash(
 
     size_t      cbCopy  = BLOCK_BYTES - bufPos;
     FileLength  remLen  = cbBuf;
-    if ( cbCopy <= cbBuf ) {
+    if ( (bufPos != 0) && (cbCopy <= cbBuf) ) {
         memcpy(buffer + bufPos, lpInput, cbCopy);
         lpInput += cbCopy;
         remLen  -= cbCopy;
@@ -142,7 +142,9 @@ MD5::updateHash(
         processBlock(lpInput, this->m_context.regs);
     }
 
-    memcpy(buffer + bufPos, lpInput, remLen);
+    if ( remLen > 0 ) {
+        memcpy(buffer + bufPos, lpInput, remLen);
+    }
     return ( ErrCode::SUCCESS );
 }
 
