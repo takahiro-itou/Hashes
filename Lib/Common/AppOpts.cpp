@@ -83,6 +83,7 @@ parseCommandLineArgs(
         case  'p':
             break;
         case  'r':
+            appOpts.resumeInfo  = std::string(optarg);
             break;
         case  's':
             break;
