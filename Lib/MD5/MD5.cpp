@@ -20,6 +20,7 @@
 
 #include    "Hashes/MD5/MD5.h"
 
+#include    <cassert>
 #include    <memory.h>
 
 #include    "Sin.tbl"
@@ -143,8 +144,10 @@ MD5::updateHash(
     }
 
     if ( remLen > 0 ) {
+        assert( ((this->m_context.numByte) & 0x3F) != 0 );
         memcpy(buffer + bufPos, lpInput, remLen);
     }
+
     return ( ErrCode::SUCCESS );
 }
 
