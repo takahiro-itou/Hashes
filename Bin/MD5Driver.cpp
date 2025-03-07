@@ -23,6 +23,7 @@
 
 #include    <iostream>
 #include    <string>
+#include    <unistd.h>
 #include    <vector>
 
 
@@ -36,6 +37,8 @@ computeHash(
     MD5::MD5::MDCode    reg;
     BtByte              inbuf[1024];
     char                buf[32];
+
+    const  long  pgsize = sysconf(_SC_PAGE_SIZE);
 
     hash.initializeHash();
 
