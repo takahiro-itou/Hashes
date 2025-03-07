@@ -145,8 +145,14 @@ MD5::updateHash(
 
     if ( remLen > 0 ) {
         assert( ((this->m_context.numByte) & 0x3F) != 0 );
+        assert( sizeof(this->m_context.buffer) <= remLen );
         memcpy(buffer + bufPos, lpInput, remLen);
     }
+#if defined( _DEBUG )
+    else {
+        assert( ((this->m_context.numByte) & 0x3F) != 0 );
+    }
+#endif
 
     return ( ErrCode::SUCCESS );
 }
