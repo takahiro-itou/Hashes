@@ -48,7 +48,7 @@ parseCommandLineArgs(
         { "text" ,  no_argument, nullptr, 't' },
         { "ignore-missing", no_argument, nullptr, 0 },
         { "pause",  required_argument, nullptr, 'p' },
-        { "resume", no_argument, nullptr, 'r' },
+        { "resume", required_argument, nullptr, 'r' },
         { "buffer-size", required_argument, nullptr, 's' },
         { 0, 0, 0, 0 },
     };
@@ -83,7 +83,6 @@ parseCommandLineArgs(
         case  'p':
             break;
         case  'r':
-            appOpts.flagResume  = BOOL_TRUE;
             break;
         case  's':
             break;

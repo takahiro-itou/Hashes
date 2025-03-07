@@ -53,7 +53,7 @@ struct  AppOpts  {
     Boolean     checkMode;
     Boolean     flagIgnore;
     FileLength  pauseSize;
-    Boolean     flagResume;
+    std::string resumeInfo;
     StringArray targetFiles;
 
     AppOpts()
