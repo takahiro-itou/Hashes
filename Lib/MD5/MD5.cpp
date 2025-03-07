@@ -31,7 +31,7 @@ namespace  MD5  {
 
 namespace  {
 
-const   BtByte  s_tblPadding[64] = {
+const   BtByte  s_tblPadding[MD5::BLOCK_BYTES] = {
     0x80, 0, 0, 0,  0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,
     0, 0, 0, 0,     0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,
     0, 0, 0, 0,     0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,
@@ -232,9 +232,9 @@ MD5::getHashValue()  const
 //
 
 void
-MD5::copySinTable(uint32_t (&buf)[64])
+MD5::copySinTable(uint32_t (&buf)[SIN_TABLE_SIZE])
 {
-    uint32_t    table[64] = {
+    uint32_t    table[SIN_TABLE_SIZE] = {
         SIN_10, SIN_11, SIN_12, SIN_13, SIN_14, SIN_15, SIN_16, SIN_17,
         SIN_18, SIN_19, SIN_1A, SIN_1B, SIN_1C, SIN_1D, SIN_1E, SIN_1F,
         SIN_20, SIN_21, SIN_22, SIN_23, SIN_24, SIN_25, SIN_26, SIN_27,
@@ -245,7 +245,7 @@ MD5::copySinTable(uint32_t (&buf)[64])
         SIN_48, SIN_49, SIN_4A, SIN_4B, SIN_4C, SIN_4D, SIN_4E, SIN_4F,
     };
 
-    for ( int i = 0; i < 64; ++ i ) {
+    for ( int i = 0; i < SIN_TABLE_SIZE; ++ i ) {
         buf[i]  = table[i];
     }
 

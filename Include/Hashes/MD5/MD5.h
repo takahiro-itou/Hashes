@@ -46,6 +46,7 @@ public:
         BLOCK_BYTES         = 64,
         PROC_BYTES_MASK     = 0x3F,
         NUM_WORD_REGS       = 4,
+        SIN_TABLE_SIZE      = 64,
     };
 
     /**   ワード型は 32 ビット。    **/
@@ -185,7 +186,7 @@ private:
     **  内容をチェックしてもらうための関数。
     **/
     static  void
-    copySinTable(uint32_t (&buf)[64]);
+    copySinTable(uint32_t (&buf)[SIN_TABLE_SIZE]);
 
     //----------------------------------------------------------------
     /**   指定した 16 ワードブロックを処理する。
