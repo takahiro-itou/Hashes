@@ -168,6 +168,8 @@ MD5::updateHash(
         //  ちょうどバッファサイズの倍数の時。  //
         assert( ((this->m_context.numByte) & PROC_BYTES_MASK) == 0 );
     }
+    cbProc  += remLen;
+    assert( (this->m_context.numByte) == cbProc );
 #endif
 
     return ( ErrCode::SUCCESS );
