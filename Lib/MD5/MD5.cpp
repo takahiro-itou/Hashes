@@ -125,6 +125,9 @@ MD5::updateHash(
     LpByteWriteBuf  buffer  = this->m_context.buffer;
 
     FileLength  bufPos  = ((this->m_context.numByte) & PROC_BYTES_MASK);
+#if defined( _DEBUG )
+    FileLength  cbProc  = (this->m_context.numByte);
+#endif
     this->m_context.numByte += cbBuf;
 
     size_t      cbCopy  = BLOCK_BYTES - bufPos;
@@ -133,10 +136,15 @@ MD5::updateHash(
         memcpy(buffer + bufPos, lpInput, cbCopy);
         lpInput += cbCopy;
         remLen  -= cbCopy;
+#if defined( _DEBUG )
+        cbProc  += cbCopy;
+        assert( (cbProc & PROC_BYTES_MASK) == 0 );
+#endif
         bufPos  = 0;
         processBlock(buffer, this->m_context.regs);
     }
 
+    assert( (remLen < BLOCK_BYTES) || (cbProc & PROC_BYTES_MASK) == 0 );
     for ( ; remLen >= BLOCK_BYTES ;
             lpInput += BLOCK_BYTES, remLen -= BLOCK_BYTES )
     {
