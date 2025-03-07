@@ -62,7 +62,7 @@ struct  AppOpts  {
           checkMode(BOOL_FALSE),
           flagIgnore(BOOL_FALSE),
           pauseSize(0),
-          flagResume(BOOL_FALSE),
+          resumeInfo(),
           targetFiles()
     { }
 };
