@@ -42,12 +42,18 @@ class  MD5
 
 public:
 
+    enum  {
+        BLOCK_BYTES         = 64,
+        BLOCK_BYTES_MASK    = 0x3F,
+        NUM_WORD_REGS       = 4,
+    };
+
     /**   ワード型は 32 ビット。    **/
     typedef     uint32_t        MDWordType;
 
     /**   ハッシュ値を格納する型。  **/
     struct  MDCode  {
-        MDWordType  words[4];
+        MDWordType  words[NUM_WORD_REGS];
     };
 
 private:
@@ -61,9 +67,9 @@ private:
     /**   計算用バッファの型。  **/
     struct  ContextRegister
     {
-        MDWordType  regs[4];
+        MDWordType  regs[NUM_WORD_REGS];
         LengthType  numByte;
-        BtByte      buffer[64];
+        BtByte      buffer[BLOCK_BYTES];
     };
 
 //========================================================================
@@ -191,11 +197,7 @@ private:
     static  inline  void
     processBlock(
             const   LpcByteReadBuf  inBuf,
-            MDWordType              regs[4]);
-
-    enum  {
-        BLOCK_BYTES = 64
-    };
+            MDWordType              regs[NUM_WORD_REGS]);
 
 //========================================================================
 //
