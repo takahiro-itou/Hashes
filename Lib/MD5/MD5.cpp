@@ -145,12 +145,15 @@ MD5::updateHash(
 
     if ( remLen > 0 ) {
         assert( ((this->m_context.numByte) & 0x3F) != 0 );
-        assert( sizeof(this->m_context.buffer) <= remLen );
+        assert( sizeof(this->m_context.buffer) >= remLen );
         memcpy(buffer + bufPos, lpInput, remLen);
     }
 #if defined( _DEBUG )
     else {
-        assert( ((this->m_context.numByte) & 0x3F) != 0 );
+        //  バッファにコピーする必要がないのは  //
+        //  現在処理済みのデータサイズが、      //
+        //  ちょうどバッファサイズの倍数の時。  //
+        assert( ((this->m_context.numByte) & 0x3F) == 0 );
     }
 #endif
 
