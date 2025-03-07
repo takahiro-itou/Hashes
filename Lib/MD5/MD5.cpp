@@ -124,7 +124,7 @@ MD5::updateHash(
     LpcByteReadBuf  lpInput = static_cast<LpcByteReadBuf>(inBuf);
     LpByteWriteBuf  buffer  = this->m_context.buffer;
 
-    FileLength  bufPos  = ((this->m_context.numByte) & 0x3F);
+    FileLength  bufPos  = ((this->m_context.numByte) & PROC_BYTES_MASK);
     this->m_context.numByte += cbBuf;
 
     size_t      cbCopy  = BLOCK_BYTES - bufPos;
@@ -144,7 +144,7 @@ MD5::updateHash(
     }
 
     if ( remLen > 0 ) {
-        assert( ((this->m_context.numByte) & 0x3F) != 0 );
+        assert( ((this->m_context.numByte) & PROC_BYTES_MASK) != 0 );
         assert( sizeof(this->m_context.buffer) >= remLen );
         memcpy(buffer + bufPos, lpInput, remLen);
     }
@@ -153,7 +153,7 @@ MD5::updateHash(
         //  バッファにコピーする必要がないのは  //
         //  現在処理済みのデータサイズが、      //
         //  ちょうどバッファサイズの倍数の時。  //
-        assert( ((this->m_context.numByte) & 0x3F) == 0 );
+        assert( ((this->m_context.numByte) & PROC_BYTES_MASK) == 0 );
     }
 #endif
 
@@ -182,8 +182,8 @@ MD5::finalizeHash()
     bits[7] = ((cbBits >> 56) & 0xFF);
 
     //  パディングを実施。  //
-    cbByte  &= 0x3F;
-    const   FileLength  padLen  = (120 - cbByte) & 0x3F;
+    cbByte  &= PROC_BYTES_MASK;
+    const   FileLength  padLen  = (120 - cbByte) & PROC_BYTES_MASK;
     updateHash(s_tblPadding, padLen);
 
     //  パディング前のビット数を追加。  //
@@ -284,7 +284,7 @@ MD5::copySinTable(uint32_t (&buf)[64])
 inline  void
 MD5::processBlock(
         const   LpcByteReadBuf  inBuf,
-        MDWordType              regs[4])
+        MDWordType              regs[NUM_WORD_REGS])
 {
     MDWordType  x[16];
     MDWordType  a = regs[0];
@@ -388,6 +388,7 @@ MD5::processBlock(
     regs[1] += b;
     regs[2] += c;
     regs[3] += d;
+
     return;
 }
 

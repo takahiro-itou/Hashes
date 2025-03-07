@@ -44,7 +44,7 @@ public:
 
     enum  {
         BLOCK_BYTES         = 64,
-        BLOCK_BYTES_MASK    = 0x3F,
+        PROC_BYTES_MASK     = 0x3F,
         NUM_WORD_REGS       = 4,
     };
 
