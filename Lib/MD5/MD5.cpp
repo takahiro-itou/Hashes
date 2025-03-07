@@ -144,10 +144,15 @@ MD5::updateHash(
         processBlock(buffer, this->m_context.regs);
     }
 
-    assert( (remLen < BLOCK_BYTES) || (cbProc & PROC_BYTES_MASK) == 0 );
     for ( ; remLen >= BLOCK_BYTES ;
             lpInput += BLOCK_BYTES, remLen -= BLOCK_BYTES )
     {
+#if defined( _DEBUG )
+        //  この時点で、処理済みのデータサイズは、  //
+        //  バッファサイズの整数倍になっている筈。  //
+        assert( (cbProc & PROC_BYTES_MASK) == 0 );
+        cbProc  += BLOCK_BYTES;
+#endif
         processBlock(lpInput, this->m_context.regs);
     }
 
