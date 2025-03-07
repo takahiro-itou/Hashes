@@ -28,6 +28,17 @@
 
 using   namespace   HASHES_NAMESPACE;
 
+void
+computeHash(
+        const  std::string  &fileName)
+{
+    MD5::MD5    hash;
+
+    hash.initializeHash();
+
+    hash.finalizeHash();
+}
+
 int  main(int argc, char * argv[])
 {
     Common::AppOpts     appOpts;
