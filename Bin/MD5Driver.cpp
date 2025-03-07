@@ -40,7 +40,7 @@ computeHash(
     hash.initializeHash();
 
     FILE *  fp  = fopen(fileName.c_str(), "rb");
-    if ( fp != nullptr ) {
+    if ( fp == nullptr ) {
         std::cerr   <<  "File not found:"
                     <<  fileName    <<  std::endl;
         return;
