@@ -32,11 +32,24 @@ void
 computeHash(
         const  std::string  &fileName)
 {
-    MD5::MD5    hash;
+    MD5::MD5            hash;
+    MD5::MD5::MDCode    reg;
+    char                buf[16];
 
     hash.initializeHash();
+    reg = hash.finalizeHash();
 
-    hash.finalizeHash();
+    for ( int i = 0; i < 4; ++ i ) {
+        sprintf(buf + (i << 2),
+                "%02x%02x%02x%02x",
+                ((reg[i]      ) & 0xFF),
+                ((reg[i] >>  8) & 0xFF),
+                ((reg[i] >> 16) & 0xFF),
+                ((reg[i] >> 24) & 0xFF)
+        );
+    }
+    std::cout   <<  buf <<  " *"    <<  fileName    <<  std::endl;
+    return;
 }
 
 int  main(int argc, char * argv[])
