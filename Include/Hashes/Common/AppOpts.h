@@ -53,7 +53,7 @@ struct  AppOpts  {
     Boolean     checkMode;
     Boolean     flagIgnore;
     FileLength  pauseSize;
-    Boolean     flagResume;
+    std::string resumeInfo;
     StringArray targetFiles;
 
     AppOpts()
@@ -62,7 +62,7 @@ struct  AppOpts  {
           checkMode(BOOL_FALSE),
           flagIgnore(BOOL_FALSE),
           pauseSize(0),
-          flagResume(BOOL_FALSE),
+          resumeInfo(),
           targetFiles()
     { }
 };
@@ -76,10 +76,9 @@ struct  AppOpts  {
 
 ErrCode
 parseCommandLineArgs(
+        AppOpts   & appOpts,
         const  int  argc,
-        char *      argv[],
-        AppOpts  *  pAppOpts);
-
+        char *      argv[]);
 
 }   //  End of namespace  Common
 HASHES_NAMESPACE_END
