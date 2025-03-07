@@ -40,12 +40,13 @@ computeHash(
     reg = hash.finalizeHash();
 
     for ( int i = 0; i < 4; ++ i ) {
+        const  MD5::MD5::MDWordType val = reg.words[i];
         sprintf(buf + (i << 2),
                 "%02x%02x%02x%02x",
-                ((reg[i]      ) & 0xFF),
-                ((reg[i] >>  8) & 0xFF),
-                ((reg[i] >> 16) & 0xFF),
-                ((reg[i] >> 24) & 0xFF)
+                ((val      ) & 0xFF),
+                ((val >>  8) & 0xFF),
+                ((val >> 16) & 0xFF),
+                ((val >> 24) & 0xFF)
         );
     }
     std::cout   <<  buf <<  " *"    <<  fileName    <<  std::endl;
@@ -56,6 +57,10 @@ int  main(int argc, char * argv[])
 {
     Common::AppOpts     appOpts;
     Common::parseCommandLineArgs(appOpts, argc, argv);
+
+    for ( size_t i = 0; i < appOpts.targetFiles.size(); ++ i ) {
+        computeHash(appOpts.targetFiles[i]);
+    }
 
     return ( 0 );
 }
