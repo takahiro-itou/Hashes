@@ -114,9 +114,9 @@ MmapUtils::mapToFile(
 
 ErrCode
 MmapUtils::mapToFile(
-        const   FileDescriptor  &fd,
-        const   FileLength      offset,
-        const   FileLength      cbSize)
+        FileDescriptor      &fd,
+        const   FileLength  offset,
+        const   FileLength  cbSize)
 {
     //  境界をページサイズに合わせる。  //
     const   FileLength  pgSize  = (this->m_pgSize);
