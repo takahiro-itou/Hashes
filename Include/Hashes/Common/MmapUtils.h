@@ -21,8 +21,8 @@
 #if !defined( HASHES_COMMON_INCLUDED_MMAP_UTILS_H )
 #    define   HASHES_COMMON_INCLUDED_MMAP_UTILS_H
 
-#if !defined( HASHES_COMMON_INCLUDED_HASHES_TYPES_H )
-#    include    "HashesTypes.h"
+#if !defined( HASHES_COMMON_INCLUDED_FILE_DESCRIPTOR_H )
+#    include    "FileDescriptor.h"
 #endif
 
 #if !defined( HASHES_SYS_INCLUDED_STRING )
@@ -108,6 +108,23 @@ public:
             const  std::string  &fileName,
             const  FileLength   offset,
             const  FileLength   cbSize);
+
+    //----------------------------------------------------------------
+    /**   ファイルディスクリプタを指定してマップする。
+    **
+    **  @param [in] fd        ディスクリプタ
+    **  @param [in] offset    マップを開始する位置。
+    **  @param [in] cbSize    マップするバイト数。
+    **  @return     エラーコードを返す。
+    **      -   異常終了の場合は、
+    **          エラーの種類を示す非ゼロ値を返す。
+    **      -   正常終了の場合は、ゼロを返す。
+    **/
+    virtual  ErrCode
+    mapToFile(
+            const   FileDescriptor  &fd,
+            const   FileLength      offset,
+            const   FileLength      cbSize);
 
     //----------------------------------------------------------------
     /**   マップを解除する。
@@ -196,7 +213,7 @@ public:
 private:
 
     /**   ファイルディスクリプタ。  **/
-    FileDescriptor *    m_pFD;
+    FileDescriptor      m_fd;
 
     /**   マップした領域。          **/
     LpWriteBuf          m_ptrBuf;
