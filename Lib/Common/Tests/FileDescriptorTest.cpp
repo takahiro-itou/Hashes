@@ -21,8 +21,11 @@
 #include    "TestDriver.h"
 #include    "Hashes/Common/FileDescriptor.h"
 
+#include    <stdio.h>
+
 
 HASHES_NAMESPACE_BEGIN
+namespace  Common  {
 
 //========================================================================
 //
@@ -35,7 +38,7 @@ HASHES_NAMESPACE_BEGIN
 class  FileDescriptorTest : public  TestFixture
 {
     CPPUNIT_TEST_SUITE(FileDescriptorTest);
-    CPPUNIT_TEST(testGetFileSizeFileDescriptor);
+    CPPUNIT_TEST(testGetFileSize);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -43,7 +46,7 @@ public:
     virtual  void   tearDown()  override    { }
 
 private:
-    void  testNameSpace();
+    void  testGetFileSize();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION( FileDescriptorTest );
@@ -53,11 +56,25 @@ CPPUNIT_TEST_SUITE_REGISTRATION( FileDescriptorTest );
 //    Tests.
 //
 
-void  FileDescriptorTest::testFileDescriptor()
+void  FileDescriptorTest::testGetFileSize()
 {
+    char    buf[1024] = { 0 };
+
+    FILE *  fp  = fopen("dummy.bin", "wb");
+
+    fwrite(buf, 1, sizeof(buf), fp);
+    fwrite(buf, 1, sizeof(buf), fp);
+    fwrite(buf, 1, 123, fp);
+    fclose(fp);
+
+    FileDescriptor  fd;
+    fd.openFile("dummy.bin");
+    CPPUNIT_ASSERT_EQUAL(2171UL, fd.getFileSize());
+
     return;
 }
 
+}   //  End of namespace  Common
 HASHES_NAMESPACE_END
 
 //========================================================================
