@@ -227,12 +227,16 @@ private:
     LpWriteBuf          m_ptrHead;
 
     /**   ページサイズ。    **/
-    long                m_pgSize;
+    const   long        m_pgSize;
 
 //========================================================================
 //
 //    Other Features.
 //
+private:
+    typedef     MmapUtils   This;
+    MmapUtils           (const  This  &);
+    This &  operator =  (const  This  &);
 public:
     //  テストクラス。  //
     friend  class   MmapUtilsTest;

@@ -50,9 +50,11 @@ namespace  {
 MmapUtils::MmapUtils()
     : m_fd(),
       m_ptrBuf(nullptr),
-      m_mapLen(0)
+      m_mapLen(0),
+      m_mapOffs(0),
+      m_ptrHead(nullptr),
+      m_pgSize(sysconf(_SC_PAGE_SIZE))
 {
-    this->m_pgSize  = sysconf(_SC_PAGE_SIZE);
 }
 
 //----------------------------------------------------------------
