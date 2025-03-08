@@ -130,6 +130,9 @@ MmapUtils::mapToFile(
         return ( ErrCode::FAILURE );
     }
 
+    //  マップが完了したらディスクリプタは閉じてよい。  //
+    //fd.closeFile();
+
     this->m_ptrBuf  = ptr;
     this->m_mapLen  = pgByte;
     this->m_mapOffs = trgOffs;

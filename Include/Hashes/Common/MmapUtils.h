@@ -112,9 +112,10 @@ public:
     //----------------------------------------------------------------
     /**   ファイルディスクリプタを指定してマップする。
     **
-    **  @param [in] fd        ディスクリプタ
-    **  @param [in] offset    マップを開始する位置。
-    **  @param [in] cbSize    マップするバイト数。
+    **  @param [in,out] fd        ディスクリプタ
+    **      マップが完了したらこのファイルは閉じられる。
+    **  @param [in]     offset    マップを開始する位置。
+    **  @param [in]     cbSize    マップするバイト数。
     **  @return     エラーコードを返す。
     **      -   異常終了の場合は、
     **          エラーの種類を示す非ゼロ値を返す。
@@ -122,9 +123,9 @@ public:
     **/
     virtual  ErrCode
     mapToFile(
-            const   FileDescriptor  &fd,
-            const   FileLength      offset,
-            const   FileLength      cbSize);
+            FileDescriptor      &fd,
+            const   FileLength  offset,
+            const   FileLength  cbSize);
 
     //----------------------------------------------------------------
     /**   マップを解除する。
