@@ -20,6 +20,7 @@
 
 #include    "Hashes/MD5/MD5.h"
 #include    "Hashes/Common/AppOpts.h"
+#include    "Hashes/Common/MmapUtils.h"
 
 #include    <iostream>
 #include    <string>
@@ -35,28 +36,31 @@ computeHash(
 {
     MD5::MD5            hash;
     MD5::MD5::MDCode    reg;
+    Common::MmapUtils   mmap;
     BtByte              inbuf[1024];
     char                buf[32];
-
-    const  long  pgsize = sysconf(_SC_PAGE_SIZE);
+    FileLength          cbRead  = 0;
+    const   FileLength  cbBlock = 1024 * 1024;
+    ErrCode             retErr;
 
     hash.initializeHash();
 
-    FILE *  fp  = fopen(fileName.c_str(), "rb");
-    if ( fp == nullptr ) {
-        std::cerr   <<  "File not found:"
-                    <<  fileName    <<  std::endl;
-        return;
+    retErr  = mmap.setupMappingToFile(fileName.c_str());
+    const   FileLength  fileLen = mmap.getFileSize();
+    std::cerr   <<  "INFO: fileLen = "  <<  fileLen <<  std::endl;
+
+    while ( cbRead + cbBlock <= fileLen ) {
+        retErr  = mmap.remapToFile(cbRead, cbBlock);
+        hash.updateHash(mmap.getAddress(), cbBlock);
+        cbRead  += cbBlock;
+    }
+    const   FileLength  cbRems  = (fileLen - cbRead);
+    if ( cbRead > 0 ) {
+        retErr  = mmap.remapToFile(cbRead, cbRems);
+        hash.updateHash(mmap.getAddress(), cbRems);
+        cbRead  += cbRems;
     }
 
-    size_t  cbRead  = 1024;
-    while ( cbRead ) {
-        cbRead  = fread(inbuf, sizeof(BtByte), 1024, fp);
-        if ( cbRead == 0 ) {
-            break;
-        }
-        hash.updateHash(inbuf, cbRead);
-    }
     reg = hash.finalizeHash();
 
     for ( int i = 0; i < 4; ++ i ) {

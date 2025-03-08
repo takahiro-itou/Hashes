@@ -148,9 +148,19 @@ MmapUtils::mapToFile(
 ErrCode
 MmapUtils::releaseMapping()
 {
+    if ( this->m_ptrBuf == nullptr ) {
+        return ( ErrCode::SUCCESS );
+    }
+
     if ( munmap(this->m_ptrBuf, this->m_mapLen) == -1 ) {
         perror("munmap");
+        return ( ErrCode::FAILURE );
     }
+
+    this->m_ptrBuf  = nullptr;
+    this->m_mapLen  = 0;
+    this->m_mapOffs = 0;
+    this->m_ptrHead = nullptr;
 
     return ( ErrCode::SUCCESS );
 }
@@ -165,6 +175,8 @@ MmapUtils::remapToFile(
         const  FileLength   cbSize)
 {
     ErrCode     retErr  = ErrCode::FAILURE;
+
+    retErr  = releaseMapping();
 
     retErr  = this->m_fd.reopenFile();
     if ( retErr != ErrCode::SUCCESS ) {
