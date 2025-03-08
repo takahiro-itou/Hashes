@@ -174,7 +174,7 @@ public:
     LpWriteBuf
     getAddress()  const
     {
-        return ( this->m_ptrBuf );
+        return ( this->m_ptrHead );
     }
 
     //----------------------------------------------------------------
@@ -220,6 +220,14 @@ private:
 
     /**   マップした領域のサイズ。  **/
     FileLength          m_mapLen;
+
+    FileLength          m_mapOffs;
+
+    /**   オフセット込みの先頭。    **/
+    LpWriteBuf          m_ptrHead;
+
+    /**   ページサイズ。    **/
+    long                m_pgSize;
 
 //========================================================================
 //

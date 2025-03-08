@@ -21,6 +21,7 @@
 #include    "Hashes/Common/MmapUtils.h"
 
 #include    <sys/stat.h>
+#include    <sys/mman.h>
 #include    <unistd.h>
 
 
@@ -51,6 +52,7 @@ MmapUtils::MmapUtils()
       m_ptrBuf(nullptr),
       m_mapLen(0)
 {
+    this->m_pgSize  = sysconf(_SC_PAGE_SIZE);
 }
 
 //----------------------------------------------------------------
@@ -114,6 +116,24 @@ MmapUtils::mapToFile(
         const   FileLength      offset,
         const   FileLength      cbSize)
 {
+    //  境界をページサイズに合わせる。  //
+    const   FileLength  pgSize  = (this->m_pgSize);
+    const   FileLength  pgOffs  = (offset / pgSize) * pgSize;
+    const   FileLength  trgOffs = (offset - pgOffs);
+    const   FileLength  pgByte  = (cbSize + trgOffs);
+
+    void *  ptr = mmap( nullptr, pgByte, PROT_READ, MAP_PRIVATE,
+                        this->m_fd.getFileDescriptor(), pgOffs);
+    if ( ptr == MAP_FAILED ) {
+        return ( ErrCode::FAILURE );
+    }
+
+    this->m_ptrBuf  = ptr;
+    this->m_mapLen  = pgByte;
+    this->m_mapOffs = trgOffs;
+    this->m_ptrHead = static_cast<LpByteWriteBuf>(ptr) + trgOffs;
+
+    return ( ErrCode::SUCCESS );
 }
 
 //----------------------------------------------------------------
