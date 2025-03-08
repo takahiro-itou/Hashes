@@ -25,9 +25,17 @@
 #    include    "HashesTypes.h"
 #endif
 
+#if !defined( HASHES_SYS_INCLUDED_STRING )
+#    include    <string>
+#    define   HASHES_SYS_INCLUDED_STRING
+#endif
+
 
 HASHES_NAMESPACE_BEGIN
 namespace  Common  {
+
+//  クラスの前方宣言。  //
+class   FileDescriptor;
 
 //========================================================================
 //
@@ -82,6 +90,53 @@ public:
 //
 //    Public Member Functions (Virtual Functions).
 //
+public:
+
+    //----------------------------------------------------------------
+    /**   ファイル名を指定してマップする。
+    **
+    **  @param [in] fileName    ファイル名。
+    **  @param [in] offset      マップを開始する位置。
+    **  @param [in] cbSize      マップするバイト数。
+    **  @return     エラーコードを返す。
+    **      -   異常終了の場合は、
+    **          エラーの種類を示す非ゼロ値を返す。
+    **      -   正常終了の場合は、ゼロを返す。
+    **/
+    virtual  ErrCode
+    mapToFile(
+            const  std::string  &fileName,
+            const  FileLength   offset,
+            const  FileLength   cbSize);
+
+    //----------------------------------------------------------------
+    /**   マップを解除する。
+    **
+    **  @return     エラーコードを返す。
+    **      -   異常終了の場合は、
+    **          エラーの種類を示す非ゼロ値を返す。
+    **      -   正常終了の場合は、ゼロを返す。
+    **/
+    virtual  ErrCode
+    releaseMapping();
+
+    //----------------------------------------------------------------
+    /**   同じファイルに対して再度マップする。
+    **
+    **    同じファイルなのでファイル名は省略する。
+    **  別のファイルに対してマップする時は mapToFile  を使う。
+    **
+    **  @param [in] offset
+    **  @param [in] cbSize
+    **  @return     エラーコードを返す。
+    **      -   異常終了の場合は、
+    **          エラーの種類を示す非ゼロ値を返す。
+    **      -   正常終了の場合は、ゼロを返す。
+    **/
+    virtual  ErrCode
+    remapToFile(
+            const  FileLength   offset,
+            const  FileLength   cbSize);
 
 //========================================================================
 //
@@ -92,6 +147,37 @@ public:
 //
 //    Accessors.
 //
+public:
+
+    //----------------------------------------------------------------
+    /**   マップした領域の先頭を指すポインタを取得する。
+    **
+    **  @return     マップした領域の先頭アドレスを返す。
+    **/
+    LpWriteBuf
+    getAddress()  const
+    {
+        return ( this->m_ptrBuf );
+    }
+
+    //----------------------------------------------------------------
+    /**   マップ対象のファイルサイズを取得する。
+    **
+    **  @return     ファイルサイズをバイト単位で返す。
+    **/
+    FileLength
+    getFileSize()  const;
+
+    //----------------------------------------------------------------
+    /**   マップした領域の長さを取得する。
+    **
+    **  @return     マップした領域のサイズをバイト単位で返す。
+    **/
+    FileLength
+    getMapSize()  const
+    {
+        return ( this->m_mapLen );
+    }
 
 //========================================================================
 //
@@ -107,6 +193,16 @@ public:
 //
 //    Member Variables.
 //
+private:
+
+    /**   ファイルディスクリプタ。  **/
+    FileDescriptor *    m_pFD;
+
+    /**   マップした領域。          **/
+    LpWriteBuf          m_ptrBuf;
+
+    /**   マップした領域のサイズ。  **/
+    FileLength          m_mapLen;
 
 //========================================================================
 //
