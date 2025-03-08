@@ -21,7 +21,9 @@
 #if !defined( HASHES_COMMON_INCLUDED_FILE_DESCRIPTOR_H )
 #    define   HASHES_COMMON_INCLUDED_SAMPLE_DOCUMENT_H
 
-#include    "HashesSettings.h"
+#if !defined( HASHES_COMMON_INCLUDED_HASHES_TYPES_H )
+#    include    "HashesTypes.h"
+#endif
 
 #include    <string>
 
