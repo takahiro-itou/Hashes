@@ -182,6 +182,10 @@ private:
 //
 //    Other Features.
 //
+private:
+    typedef     FileDescriptor      This;
+    FileDescriptor      (const  This  &);
+    This &  operator =  (const  This  &);
 public:
     //  テストクラス。  //
     friend  class   FileDescriptorTest;

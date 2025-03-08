@@ -49,6 +49,7 @@ namespace  {
 FileDescriptor::FileDescriptor()
     : m_descriptor(-1),
       m_fileName(),
+      m_oModeFlags(O_RDONLY),
       m_cbFileSize(0)
 {
 }
