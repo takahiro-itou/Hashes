@@ -156,6 +156,19 @@ public:
             const  FileLength   offset,
             const  FileLength   cbSize);
 
+    //----------------------------------------------------------------
+    /**   ファイルに対してマップの準備をする。
+    **
+    **  @param [in] fileName    ファイル名。
+    **  @return     エラーコードを返す。
+    **      -   異常終了の場合は、
+    **          エラーの種類を示す非ゼロ値を返す。
+    **      -   正常終了の場合は、ゼロを返す。
+    **/
+    virtual  ErrCode
+    setupMappingToFile(
+            const  std::string  &fileName);
+
 //========================================================================
 //
 //    Public Member Functions.

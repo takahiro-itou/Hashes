@@ -174,6 +174,26 @@ MmapUtils::remapToFile(
     return  mapToFile(this->m_fd, offset, cbSize);
 }
 
+//----------------------------------------------------------------
+//    ファイルに対してマップの準備をする。
+//
+
+ErrCode
+MmapUtils::setupMappingToFile(
+        const  std::string  &fileName)
+{
+    ErrCode     retErr  = ErrCode::FAILURE;
+
+    retErr  = this->m_fd.openFile(fileName);
+    if ( retErr != ErrCode::SUCCESS ) {
+        return ( retErr );
+    }
+
+    //  ファイルは一旦閉じておく。  //
+    retErr  =  this->m_fd.closeFile();
+    return ( retErr );
+}
+
 //========================================================================
 //
 //    Public Member Functions.
