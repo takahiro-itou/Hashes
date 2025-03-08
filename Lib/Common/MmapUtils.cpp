@@ -47,6 +47,9 @@ namespace  {
 //  （デフォルトコンストラクタ）。
 
 MmapUtils::MmapUtils()
+    : m_fd(),
+      m_ptrBuf(nullptr),
+      m_mapLen(0)
 {
 }
 
@@ -57,6 +60,8 @@ MmapUtils::MmapUtils()
 
 MmapUtils::~MmapUtils()
 {
+    releaseMapping();
+    this->m_fd.closeFile();
 }
 
 //========================================================================
@@ -79,6 +84,71 @@ MmapUtils::~MmapUtils()
 //    Public Member Functions (Virtual Functions).
 //
 
+//----------------------------------------------------------------
+//    ファイル名を指定してマップする。
+//
+
+ErrCode
+MmapUtils::mapToFile(
+        const  std::string  &fileName,
+        const  FileLength   offset,
+        const  FileLength   cbSize)
+{
+    ErrCode     retErr  = ErrCode::FAILURE;
+
+    retErr  = this->m_fd.openFile(fileName);
+    if ( retErr != ErrCode::SUCCESS ) {
+        return ( retErr );
+    }
+
+    return  mapToFile(this->m_fd, offset, cbSize);
+}
+
+//----------------------------------------------------------------
+//    ファイルディスクリプタを指定してマップする。
+//
+
+ErrCode
+MmapUtils::mapToFile(
+        const   FileDescriptor  &fd,
+        const   FileLength      offset,
+        const   FileLength      cbSize)
+{
+}
+
+//----------------------------------------------------------------
+//    マップを解除する。
+//
+
+ErrCode
+MmapUtils::releaseMapping()
+{
+    if ( munmap(this->m_ptrBuf, this->m_mapLen) == -1 ) {
+        perror("munmap");
+    }
+
+    return ( ErrCode::SUCCESS );
+}
+
+//----------------------------------------------------------------
+//    同じファイルに対して再度マップする。
+//
+
+ErrCode
+MmapUtils::remapToFile(
+        const  FileLength   offset,
+        const  FileLength   cbSize)
+{
+    ErrCode     retErr  = ErrCode::FAILURE;
+
+    retErr  = this->m_fd.reopenFile();
+    if ( retErr != ErrCode::SUCCESS ) {
+        return ( retErr );
+    }
+
+    return  mapToFile(this->m_fd, offset, cbSize);
+}
+
 //========================================================================
 //
 //    Public Member Functions.
@@ -88,6 +158,16 @@ MmapUtils::~MmapUtils()
 //
 //    Accessors.
 //
+
+//----------------------------------------------------------------
+//    マップ対象のファイルサイズを取得する。
+//
+
+FileLength
+MmapUtils::getFileSize()  const
+{
+    return  this->m_fd.getFileSize();
+}
 
 //========================================================================
 //
