@@ -25,7 +25,15 @@
 #    include    "HashesTypes.h"
 #endif
 
-#include    <string>
+#if !defined( HASHED_SYS_INCLUDED_FCNTL_H )
+#    include    <fcntl.h>
+#    define   HASHED_SYS_INCLUDED_FCNTL_H
+#endif
+
+#if !defined( HASHES_SYS_INCLUDED_STRING )
+#    include    <string>
+#    define   HASHES_SYS_INCLUDED_STRING
+#endif
 
 
 HASHES_NAMESPACE_BEGIN
@@ -43,6 +51,7 @@ class  FileDescriptor
 //
 //    Internal Type Definitions.
 //
+public:
 
 //========================================================================
 //
@@ -83,6 +92,29 @@ public:
 //
 //    Public Member Functions (Virtual Functions).
 //
+public:
+
+    //----------------------------------------------------------------
+    /**   ファイルを閉じる。
+    **
+    **/
+    virtual  ErrCode
+    closeFile();
+
+    //----------------------------------------------------------------
+    /**   ファイルを開く。
+    **
+    **  @param [in] fileName    ファイル名。
+    **  @param [in] mode        オープンモード。
+    **/
+    virtual  ErrCode
+    openFile(
+            const  std::string  &fileName,
+            const  int  mode = O_RDONLY);
+
+    virtual  ErrCode
+    reopenFile();
+
 
 //========================================================================
 //
@@ -93,6 +125,27 @@ public:
 //
 //    Accessors.
 //
+public:
+
+    //----------------------------------------------------------------
+    /**   ファイルディスクリプタを取得する。
+    **
+    **/
+    const   int
+    getFileDescriptor()  const
+    {
+        return ( this->m_descriptor );
+    }
+
+    //----------------------------------------------------------------
+    /**   ファイルサイズを取得する。
+    **
+    **/
+    const   FileLength
+    getFileSize()  const
+    {
+        return ( this->m_cbFileSize );
+    }
 
 //========================================================================
 //
@@ -115,6 +168,9 @@ private:
 
     /**   ファイル名。  **/
     std::string     m_fileName;
+
+    /**   ファイルオープンモード。  **/
+    int             m_oModeFlags;
 
     /**   ファイルサイズ。  **/
     FileLength      m_cbFileSize;
