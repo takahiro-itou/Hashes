@@ -21,6 +21,7 @@
 #include    "Hashes/Common/FileDescriptor.h"
 
 #include    <sys/stat.h>
+#include    <unistd.h>
 
 
 HASHES_NAMESPACE_BEGIN
