@@ -182,7 +182,7 @@ MD5::saveHash()  const
     ss  <<  buf;
 
     //  処理したバイト数も必要。    //
-    sprintf(buf, "0x%08lx,", (this->m_context.numByte & ~PROC_BYTES_MASK));
+    sprintf(buf, "0x%016lx,", (this->m_context.numByte & ~PROC_BYTES_MASK));
     ss  <<  buf;
 
     return  ss.str();
@@ -242,7 +242,7 @@ MD5::resumeHash(
     //  処理済みのバイト数を取得する。  //
     size_t  idx = 0;
     const  unsigned  long   val = std::stoull(ptr, &idx, 0);
-    if ( idx != 10 ) {
+    if ( idx != 18 ) {
         std::cerr   <<  "Invalid resume format : "  <<  resText <<  std::endl;
         return ( ErrCode::FAILURE );
     }
