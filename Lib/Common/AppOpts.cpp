@@ -20,6 +20,7 @@
 
 #include    "Hashes/Common/AppOpts.h"
 
+#include    <cstdlib>
 #include    <getopt.h>
 #include    <iostream>
 
@@ -28,6 +29,43 @@ HASHES_NAMESPACE_BEGIN
 namespace  Common  {
 
 namespace  {
+
+inline  FileLength
+parseSizeText(
+        const  std::string  &optarg)
+{
+    FileLength  sfactor = 1;
+    size_t  idx = 0;
+    const  unsigned  long   val = std::stoull(optarg, &idx, 0);
+
+    if ( idx != optarg.size() ) {
+        for ( size_t pos = 0; pos < optarg.size(); ++ pos ) {
+            switch ( optarg[pos] ) {
+            case  'k':
+            case  'K':
+                sfactor *= 1024;
+                break;
+            case  'm':
+            case  'M':
+                sfactor *= (1024 * 1024);
+                break;
+            case  'g':
+            case  'G':
+                sfactor *= (1024 * 1024 * 1024);
+                break;
+            }
+            if ( optarg[pos] == 'b' || optarg[pos] == 'B' ) {
+                ++  pos;
+                break;
+            }
+        }
+    }
+    if ( idx != optarg.size() ) {
+        std::cerr   <<  "Invalid argument: "    <<  optarg  <<  std::endl;
+    }
+
+    return ( val * sfactor );
+}
 
 }   //  End of (Unnamed) namespace.
 
