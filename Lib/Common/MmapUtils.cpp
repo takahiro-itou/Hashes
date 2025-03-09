@@ -131,7 +131,7 @@ MmapUtils::mapToFile(
     }
 
     //  マップが完了したらディスクリプタは閉じてよい。  //
-    //fd.closeFile();
+    fd.closeFile();
 
     this->m_ptrBuf  = ptr;
     this->m_mapLen  = pgByte;
