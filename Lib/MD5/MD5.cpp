@@ -175,14 +175,14 @@ MD5::saveHash()  const
     char    buf[256];
     for ( int i = 0; i < NUM_WORD_REGS; ++ i ) {
         const   MDWordType  val = this->m_context.regs[i];
-        sprintf(buf + (i << 3), "%08x", val);
+        sprintf(buf + (i * 9), "%08x ", val);
     }
 
     std::stringstream   ss;
     ss  <<  buf;
 
     //  処理したバイト数も必要。    //
-    sprintf(buf, " 0x%08lx,", (this->m_context.numByte & ~PROC_BYTES_MASK));
+    sprintf(buf, "0x%08lx,", (this->m_context.numByte & ~PROC_BYTES_MASK));
     ss  <<  buf;
 
     return  ss.str();
@@ -234,10 +234,10 @@ MD5::resumeHash(
             val = (val << 4) | (b1 & 0x0F);
         }
         this->m_context.regs[i] = val;
-    }
 
-    assert(*ptr == ' ');
-    ++  ptr;
+        assert(*ptr == ' ');
+        ++  ptr;
+    }
 
     //  処理済みのバイト数を取得する。  //
     size_t  idx = 0;
@@ -250,9 +250,12 @@ MD5::resumeHash(
     if ( (val & PROC_BYTES_MASK) ) {
         std::cerr   <<  "Bad resume offset : "  <<  val <<  std::endl;
         return ( ErrCode::FAILURE );
+    } else {
+        std::cerr   <<  "INFO: resume from : "  <<  val <<  std::endl;
     }
 
-    resInfo.resumeOffs  = this->m_context.numByte = static_cast<FileLength>(val);
+    this->m_context.numByte = static_cast<FileLength>(val);
+    resInfo.resumeOffs  = this->m_context.numByte;
     return ( ErrCode::SUCCESS );
 }
 

@@ -32,24 +32,29 @@ using   namespace   HASHES_NAMESPACE;
 
 MD5::MD5::MDCode
 runCalcHash(
-        Common::ResumeInfo  &resInfo,
-        const  FileLength   cbBlock)
+        Common::ResumeInfo      &resInfo,
+        const  FileLength       cbBlock,
+        const  Common::AppOpts  &appOpts)
 {
     MD5::MD5            hash;
     MD5::MD5::MDCode    reg;
     Common::MmapUtils   mmap;
     char                buf[64];
 
+    if ( appOpts.resumeInfo.empty() ) {
+        hash.initializeHash();
+    } else {
+        hash.resumeHash(appOpts.resumeInfo, resInfo);
+    }
+
     FileLength          cbRead  = resInfo.resumeOffs;
     const   FileLength  cbPause = resInfo.processLen;
     ErrCode             retErr;
 
     std::cerr   <<  "INFO: BufferSize = "  <<  cbBlock  <<  std::endl;
-
-    if ( cbRead == 0 ) {
-        hash.initializeHash();
-    }
-
+    std::cerr   <<  "INFO: cbRead = " << cbRead
+                <<  ", cbPause = "  <<  cbPause
+                <<  std::endl;
     retErr  = mmap.setupMappingToFile(resInfo.targetFile.c_str());
     if ( retErr != ErrCode::SUCCESS ) {
         return  reg;
@@ -127,7 +132,7 @@ computeHash(
     resInfo.processLen  = appOpts.pauseSize;
     resInfo.targetFile  = fileName;
 
-    runCalcHash(resInfo, appOpts.bufferSize);
+    runCalcHash(resInfo, appOpts.bufferSize, appOpts);
 }
 
 int  main(int argc, char * argv[])
