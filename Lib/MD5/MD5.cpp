@@ -96,6 +96,55 @@ MD5::~MD5()
 //
 
 //----------------------------------------------------------------
+//    ハッシュ値の計算を完了する。
+//
+
+MD5::MDCode
+MD5::finalizeHash()
+{
+    BtByte  bits[8];
+
+    FileLength  cbByte  = (this->m_context.numByte);
+    const   FileLength  cbBits  = (cbByte << 3);
+
+    bits[0] = ((cbBits      ) & 0xFF);
+    bits[1] = ((cbBits >>  8) & 0xFF);
+    bits[2] = ((cbBits >> 16) & 0xFF);
+    bits[3] = ((cbBits >> 24) & 0xFF);
+    bits[4] = ((cbBits >> 32) & 0xFF);
+    bits[5] = ((cbBits >> 40) & 0xFF);
+    bits[6] = ((cbBits >> 48) & 0xFF);
+    bits[7] = ((cbBits >> 56) & 0xFF);
+
+    //  パディングを実施。  //
+    cbByte  &= PROC_BYTES_MASK;
+    const   FileLength  padLen  = (120 - cbByte) & PROC_BYTES_MASK;
+    updateHash(s_tblPadding, padLen);
+
+    //  パディング前のビット数を追加。  //
+    updateHash(bits, sizeof(bits));
+
+    return  getHashValue();
+}
+
+//----------------------------------------------------------------
+//    計算したハッシュ値を取得する。
+//
+
+MD5::MDCode
+MD5::getHashValue()  const
+{
+    MDCode  output;
+
+    output.words[0] = this->m_context.regs[0];
+    output.words[1] = this->m_context.regs[1];
+    output.words[2] = this->m_context.regs[2];
+    output.words[3] = this->m_context.regs[3];
+
+    return ( output );
+}
+
+//----------------------------------------------------------------
 //    ハッシュ値の計算バッファを初期化する。
 //
 
@@ -173,55 +222,6 @@ MD5::updateHash(
 #endif
 
     return ( ErrCode::SUCCESS );
-}
-
-//----------------------------------------------------------------
-//    ハッシュ値の計算を完了する。
-//
-
-MD5::MDCode
-MD5::finalizeHash()
-{
-    BtByte  bits[8];
-
-    FileLength  cbByte  = (this->m_context.numByte);
-    const   FileLength  cbBits  = (cbByte << 3);
-
-    bits[0] = ((cbBits      ) & 0xFF);
-    bits[1] = ((cbBits >>  8) & 0xFF);
-    bits[2] = ((cbBits >> 16) & 0xFF);
-    bits[3] = ((cbBits >> 24) & 0xFF);
-    bits[4] = ((cbBits >> 32) & 0xFF);
-    bits[5] = ((cbBits >> 40) & 0xFF);
-    bits[6] = ((cbBits >> 48) & 0xFF);
-    bits[7] = ((cbBits >> 56) & 0xFF);
-
-    //  パディングを実施。  //
-    cbByte  &= PROC_BYTES_MASK;
-    const   FileLength  padLen  = (120 - cbByte) & PROC_BYTES_MASK;
-    updateHash(s_tblPadding, padLen);
-
-    //  パディング前のビット数を追加。  //
-    updateHash(bits, sizeof(bits));
-
-    return  getHashValue();
-}
-
-//----------------------------------------------------------------
-//    計算したハッシュ値を取得する。
-//
-
-MD5::MDCode
-MD5::getHashValue()  const
-{
-    MDCode  output;
-
-    output.words[0] = this->m_context.regs[0];
-    output.words[1] = this->m_context.regs[1];
-    output.words[2] = this->m_context.regs[2];
-    output.words[3] = this->m_context.regs[3];
-
-    return ( output );
 }
 
 //========================================================================
