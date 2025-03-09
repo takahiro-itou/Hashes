@@ -40,7 +40,7 @@ computeHash(
     BtByte              inbuf[1024];
     char                buf[32];
     FileLength          cbRead  = 0;
-    const   FileLength  cbBlock = 1024 * 1024;
+    const   FileLength  cbBlock = 1024 * 1024 * 8;
     ErrCode             retErr;
 
     hash.initializeHash();
@@ -53,6 +53,10 @@ computeHash(
         retErr  = mmap.remapToFile(cbRead, cbBlock);
         hash.updateHash(mmap.getAddress(), cbBlock);
         cbRead  += cbBlock;
+        std::cerr   <<  "\rINFO: read "
+                    <<  cbRead  <<  " / "   <<  fileLen
+                    <<  " ("    <<  (cbRead * 100 / fileLen)
+                    <<  " %)";
     }
     const   FileLength  cbRems  = (fileLen - cbRead);
     if ( cbRead > 0 ) {
@@ -60,7 +64,10 @@ computeHash(
         hash.updateHash(mmap.getAddress(), cbRems);
         cbRead  += cbRems;
     }
-
+    std::cerr   <<  "\rINFO: read "
+                <<  cbRead  <<  " / "   <<  fileLen
+                <<  " ("    <<  (cbRead * 100 / fileLen)
+                <<  std::endl;
     reg = hash.finalizeHash();
 
     for ( int i = 0; i < 4; ++ i ) {
