@@ -64,12 +64,19 @@ runCalcHash(
         hash.updateHash(mmap.getAddress(), cbBlock);
         cbRead  += cbBlock;
         std::cerr   <<  "\rINFO: read "
-                    <<  cbRead  <<  " / "   <<  fileLen
+                    <<  cbRead  <<  " / "   <<  posLast
                     <<  " ("    <<  (cbRead * 100 / fileLen)
                     <<  " %) [" <<  fileLen <<  "]";
     }
     const   FileLength  cbRems  = (posLast - cbRead);
-    if ( cbRead > 0 ) {
+    std::cerr   <<  "\rINFO: read "
+                <<  cbRead  <<  " / "   <<  posLast
+                <<  " ("    <<  (cbRead * 100 / fileLen)
+                <<  " %) [" <<  fileLen <<  "]"
+                <<  std::endl;
+    std::cerr   <<  "\nINFO: cbRems = " <<  cbRems  <<  std::endl;
+
+    if ( cbRems > 0 ) {
         retErr  = mmap.remapToFile(cbRead, cbRems);
         hash.updateHash(mmap.getAddress(), cbRems);
         cbRead  += cbRems;
@@ -82,11 +89,10 @@ runCalcHash(
 
     if ( cbRead < fileLen ) {
         //  途中の場合は、その時点での内部状態を表示。  //
-        reg = hash.getHashValue();
+        std::cout   <<  hash.saveHash();
     } else {
         //  最後まで到達していたら終了処理を行う。  //
         reg = hash.finalizeHash();
-    }
 
     for ( int i = 0; i < 4; ++ i ) {
         const  MD5::MD5::MDWordType val = reg.words[i];
@@ -102,6 +108,7 @@ runCalcHash(
     if ( cbRead < fileLen ) {
         sprintf(buf, " 0x%08lx,", cbRead);
         std::cout   <<  buf;
+    }
     }
     std::cout   <<  " *"    <<  resInfo.targetFile  <<  std::endl;
 

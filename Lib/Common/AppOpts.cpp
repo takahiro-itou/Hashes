@@ -124,6 +124,7 @@ parseCommandLineArgs(
             appOpts.checkMode   = BOOL_TRUE;
             break;
         case  'p':
+            appOpts.pauseSize   = parseSizeText(optarg, retErr);
             break;
         case  'r':
             appOpts.resumeInfo  = std::string(optarg);
