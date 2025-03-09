@@ -38,6 +38,8 @@ bin_PROGRAMS            =  \
         md5-driver
 
 dist_noinst_DATA        =  \
+        call-md5sum.in     \
+        smd5sum.in         \
         CMakeLists.txt
 
 ##
