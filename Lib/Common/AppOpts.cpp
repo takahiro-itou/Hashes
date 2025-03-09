@@ -40,13 +40,13 @@ parseSizeText(
     const  unsigned  long   val = std::stoull(optarg, &idx, 0);
 
     if ( idx != optarg.size() ) {
-        for ( size_t pos = 0; pos < optarg.size(); ++ pos ) {
-            if ( optarg[pos] == 'b' || optarg[pos] == 'B' ) {
-                ++  pos;
+        for ( ; idx < optarg.size(); ++ idx ) {
+            if ( optarg[idx] == 'b' || optarg[idx] == 'B' ) {
+                ++  idx;
                 break;
             }
 
-            switch ( optarg[pos] ) {
+            switch ( optarg[idx] ) {
             case  'g':
             case  'G':
                 sfactor *= 1024;
@@ -63,7 +63,12 @@ parseSizeText(
         }
     }
     if ( idx != optarg.size() ) {
-        std::cerr   <<  "Invalid argument: "    <<  optarg  <<  std::endl;
+        std::cerr   <<  "Invalid argument: "
+                    <<  optarg
+                    <<  " at " <<   idx
+                    <<  optarg[idx]
+                    <<  "(" <<  optarg.size() << ")"
+                    <<  std::endl;
         retErr  = ErrCode::FAILURE;
     }
 

@@ -5,6 +5,7 @@ script_dir=$(readlink -f "$(dirname "${current_srcfile}")")
 
 maxsize=500M
 
+set  +e
 for file in "$@" ; do
     bytes=$(stat -c "%s" "${file}")
     echo  "File ${file}, size = ${bytes}"  1>&2
@@ -15,7 +16,8 @@ for file in "$@" ; do
 
     while [[ ${retErr} -eq 4 ]] ; do
         resume="${output}"
-        output=$("${script_dir}/md5-driver" -p ${maxsize} -r "${resume}" "${file}")
+        output=$("${script_dir}/md5-driver"  \
+                 -p ${maxsize} -r "${resume}" "${file}")
         retErr=$?
         echo "${retErr}"  1>&2
 
