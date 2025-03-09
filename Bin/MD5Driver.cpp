@@ -37,7 +37,6 @@ computeHash(
     MD5::MD5            hash;
     MD5::MD5::MDCode    reg;
     Common::MmapUtils   mmap;
-    BtByte              inbuf[1024];
     char                buf[32];
     FileLength          cbRead  = 0;
     const   FileLength  cbBlock = 1024 * 1024 * 8;
@@ -46,8 +45,10 @@ computeHash(
     hash.initializeHash();
 
     retErr  = mmap.setupMappingToFile(fileName.c_str());
+    if ( retErr != ErrCode::SUCCESS ) {
+        return;
+    }
     const   FileLength  fileLen = mmap.getFileSize();
-    std::cerr   <<  "INFO: fileLen = "  <<  fileLen <<  std::endl;
 
     while ( cbRead + cbBlock <= fileLen ) {
         retErr  = mmap.remapToFile(cbRead, cbBlock);
