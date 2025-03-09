@@ -32,15 +32,18 @@ using   namespace   HASHES_NAMESPACE;
 
 void
 computeHash(
-        const  std::string  &fileName)
+        const  std::string      &fileName,
+        const  Common::AppOpts  &appOpts)
 {
     MD5::MD5            hash;
     MD5::MD5::MDCode    reg;
     Common::MmapUtils   mmap;
     char                buf[32];
     FileLength          cbRead  = 0;
-    const   FileLength  cbBlock = 1024 * 1024 * 8;
+    const   FileLength  cbBlock = appOpts.bufferSize;
     ErrCode             retErr;
+
+    std::cerr   <<  "INFO: BufferSize = "  <<  cbBlock  <<  std::endl;
 
     hash.initializeHash();
 
@@ -91,7 +94,7 @@ int  main(int argc, char * argv[])
     Common::parseCommandLineArgs(appOpts, argc, argv);
 
     for ( size_t i = 0; i < appOpts.targetFiles.size(); ++ i ) {
-        computeHash(appOpts.targetFiles[i]);
+        computeHash(appOpts.targetFiles[i], appOpts);
     }
 
     return ( 0 );

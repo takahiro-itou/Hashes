@@ -95,6 +95,7 @@ parseCommandLineArgs(
         { 0, 0, 0, 0 },
     };
 
+    ErrCode retErr;
     int     c;
     int     lo_index;
 
@@ -128,6 +129,10 @@ parseCommandLineArgs(
             appOpts.resumeInfo  = std::string(optarg);
             break;
         case  's':
+            appOpts.bufferSize  = parseSizeText(optarg, retErr);
+            if ( appOpts.bufferSize <= 16 ) {
+                appOpts.bufferSize  = 16;
+            }
             break;
         case  't':
             appOpts.textMode    = BOOL_TRUE;

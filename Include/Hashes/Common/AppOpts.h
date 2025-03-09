@@ -62,8 +62,8 @@ struct  AppOpts  {
           textMode(BOOL_FALSE),
           checkMode(BOOL_FALSE),
           flagIgnore(BOOL_FALSE),
-          bufferSize(0),
-          pauseSize(0),
+          bufferSize(8 * 1024 * 1024),
+          pauseSize (0),
           resumeInfo(),
           targetFiles()
     { }
