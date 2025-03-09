@@ -22,6 +22,7 @@
 #include    "Hashes/Common/FileDescriptor.h"
 
 #include    <stdio.h>
+#include    <unistd.h>
 
 
 HASHES_NAMESPACE_BEGIN
@@ -59,17 +60,27 @@ CPPUNIT_TEST_SUITE_REGISTRATION( FileDescriptorTest );
 void  FileDescriptorTest::testGetFileSize()
 {
     char    buf[1024] = { 0 };
+    char    name1[1024] = "testtmp.XXXXXX";
 
-    FILE *  fp  = fopen("dummy.bin", "wb");
+    int     tmp_fd  = mkstemp(name1);
+    std::cerr   <<  "temporary file : " <<  name1   <<  std::endl;
+    if ( tmp_fd == -1 ) {
+        perror("mkstemp");
+        return;
+    }
 
-    fwrite(buf, 1, sizeof(buf), fp);
-    fwrite(buf, 1, sizeof(buf), fp);
-    fwrite(buf, 1, 123, fp);
-    fclose(fp);
+    int     num_wrt = 0;
+    num_wrt =  write(tmp_fd, buf, sizeof(buf));
+    num_wrt += write(tmp_fd, buf, sizeof(buf));
+    num_wrt += write(tmp_fd, buf, 123);
+    close(tmp_fd);
 
     FileDescriptor  fd;
-    fd.openFile("dummy.bin");
+    fd.openFile(name1);
     CPPUNIT_ASSERT_EQUAL(2171UL, fd.getFileSize());
+    CPPUNIT_ASSERT_EQUAL(2171, num_wrt);
+
+    unlink(name1);
 
     return;
 }
