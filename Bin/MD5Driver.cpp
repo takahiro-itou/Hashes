@@ -79,14 +79,14 @@ runCalcHash(
                 <<  " ("    <<  (cbRead * 100 / fileLen)
                 <<  " %) [" <<  fileLen <<  "]"
                 <<  std::endl;
-    std::cerr   <<  "\nINFO: cbRems = " <<  cbRems  <<  std::endl;
+    std::cerr   <<  "INFO: cbRems = " <<  cbRems  <<  std::endl;
 
     if ( cbRems > 0 ) {
         retErr  = mmap.remapToFile(cbRead, cbRems);
         hash.updateHash(mmap.getAddress(), cbRems);
         cbRead  += cbRems;
     }
-    std::cerr   <<  "\rINFO: read "
+    std::cerr   <<  "INFO: read "
                <<  cbRead  <<  " / "   <<  posLast
                 <<  " ("    <<  (cbRead * 100 / fileLen)
                 <<  " %) [" <<  fileLen <<  "]"
@@ -100,21 +100,17 @@ runCalcHash(
         //  最後まで到達していたら終了処理を行う。  //
         reg = hash.finalizeHash();
 
-    for ( int i = 0; i < 4; ++ i ) {
-        const  MD5::MD5::MDWordType val = reg.words[i];
-        sprintf(buf + (i << 3),
-                "%02x%02x%02x%02x",
-                ((val      ) & 0xFF),
-                ((val >>  8) & 0xFF),
-                ((val >> 16) & 0xFF),
-                ((val >> 24) & 0xFF)
-        );
-    }
-    std::cout   <<  buf;
-    if ( cbRead < fileLen ) {
-        sprintf(buf, " 0x%08lx,", cbRead);
+        for ( int i = 0; i < 4; ++ i ) {
+            const  MD5::MD5::MDWordType val = reg.words[i];
+            sprintf(buf + (i << 3),
+                    "%02x%02x%02x%02x",
+                    ((val      ) & 0xFF),
+                    ((val >>  8) & 0xFF),
+                    ((val >> 16) & 0xFF),
+                    ((val >> 24) & 0xFF)
+            );
+        }
         std::cout   <<  buf;
-    }
         retErr  = ErrCode::SUCCESS;
     }
     std::cout   <<  " *"    <<  resInfo.targetFile  <<  std::endl;
