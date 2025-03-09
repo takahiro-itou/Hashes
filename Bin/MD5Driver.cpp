@@ -30,7 +30,7 @@
 
 using   namespace   HASHES_NAMESPACE;
 
-MD5::MD5::MDCode
+ErrCode
 runCalcHash(
         Common::ResumeInfo      &resInfo,
         const  FileLength       cbBlock,
@@ -57,7 +57,7 @@ runCalcHash(
                 <<  std::endl;
     retErr  = mmap.setupMappingToFile(resInfo.targetFile.c_str());
     if ( retErr != ErrCode::SUCCESS ) {
-        return  reg;
+        return ( retErr );
     }
 
     const   FileLength  fileLen = mmap.getFileSize();
@@ -95,6 +95,7 @@ runCalcHash(
     if ( cbRead < fileLen ) {
         //  途中の場合は、その時点での内部状態を表示。  //
         std::cout   <<  hash.saveHash();
+        retErr  = ErrCode::PAUSED;
     } else {
         //  最後まで到達していたら終了処理を行う。  //
         reg = hash.finalizeHash();
@@ -114,13 +115,14 @@ runCalcHash(
         sprintf(buf, " 0x%08lx,", cbRead);
         std::cout   <<  buf;
     }
+        retErr  = ErrCode::SUCCESS;
     }
     std::cout   <<  " *"    <<  resInfo.targetFile  <<  std::endl;
 
-    return ( reg );
+    return ( retErr );
 }
 
-void
+ErrCode
 computeHash(
         const  std::string      &fileName,
         const  Common::AppOpts  &appOpts)
@@ -132,7 +134,7 @@ computeHash(
     resInfo.processLen  = appOpts.pauseSize;
     resInfo.targetFile  = fileName;
 
-    runCalcHash(resInfo, appOpts.bufferSize, appOpts);
+    return  runCalcHash(resInfo, appOpts.bufferSize, appOpts);
 }
 
 int  main(int argc, char * argv[])
@@ -140,9 +142,14 @@ int  main(int argc, char * argv[])
     Common::AppOpts     appOpts;
     Common::parseCommandLineArgs(appOpts, argc, argv);
 
+    ErrCode     retErr  = ErrCode::SUCCESS;
+
     for ( size_t i = 0; i < appOpts.targetFiles.size(); ++ i ) {
-        computeHash(appOpts.targetFiles[i], appOpts);
+        const  ErrCode  ec  = computeHash(appOpts.targetFiles[i], appOpts);
+        if ( ec != ErrCode::SUCCESS ) {
+            retErr  = ec;
+        }
     }
 
-    return ( 0 );
+    return ( static_cast<int>(retErr) );
 }
