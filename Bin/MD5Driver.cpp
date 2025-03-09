@@ -20,6 +20,7 @@
 
 #include    "Hashes/MD5/MD5.h"
 #include    "Hashes/Common/AppOpts.h"
+#include    "Hashes/Common/MmapUtils.h"
 
 #include    <iostream>
 #include    <string>
@@ -29,35 +30,75 @@
 
 using   namespace   HASHES_NAMESPACE;
 
-void
-computeHash(
-        const  std::string  &fileName)
+ErrCode
+runCalcHash(
+        Common::ResumeInfo      &resInfo,
+        const  FileLength       cbBlock,
+        const  Common::AppOpts  &appOpts)
 {
     MD5::MD5            hash;
     MD5::MD5::MDCode    reg;
-    BtByte              inbuf[1024];
-    char                buf[32];
+    Common::MmapUtils   mmap;
+    char                buf[64];
 
-    const  long  pgsize = sysconf(_SC_PAGE_SIZE);
-
-    hash.initializeHash();
-
-    FILE *  fp  = fopen(fileName.c_str(), "rb");
-    if ( fp == nullptr ) {
-        std::cerr   <<  "File not found:"
-                    <<  fileName    <<  std::endl;
-        return;
+    if ( appOpts.resumeInfo.empty() ) {
+        hash.initializeHash();
+    } else {
+        hash.resumeHash(appOpts.resumeInfo, resInfo);
     }
 
-    size_t  cbRead  = 1024;
-    while ( cbRead ) {
-        cbRead  = fread(inbuf, sizeof(BtByte), 1024, fp);
-        if ( cbRead == 0 ) {
-            break;
-        }
-        hash.updateHash(inbuf, cbRead);
+    FileLength          cbRead  = resInfo.resumeOffs;
+    const   FileLength  cbPause = resInfo.processLen;
+    ErrCode             retErr;
+
+    std::cerr   <<  "INFO: BufferSize = "  <<  cbBlock  <<  std::endl;
+    std::cerr   <<  "INFO: cbRead = " << cbRead
+                <<  ", cbPause = "  <<  cbPause
+                <<  std::endl;
+    retErr  = mmap.setupMappingToFile(resInfo.targetFile.c_str());
+    if ( retErr != ErrCode::SUCCESS ) {
+        return ( retErr );
     }
-    reg = hash.finalizeHash();
+
+    const   FileLength  fileLen = mmap.getFileSize();
+    FileLength  cbTail  = (cbPause > 0 ? (cbRead + cbPause) : fileLen);
+
+    const   FileLength  posLast = (cbTail < fileLen ? cbTail : fileLen);
+    while ( cbRead + cbBlock <= posLast ) {
+        retErr  = mmap.remapToFile(cbRead, cbBlock);
+        hash.updateHash(mmap.getAddress(), cbBlock);
+        cbRead  += cbBlock;
+        std::cerr   <<  "\rINFO: read "
+                    <<  cbRead  <<  " / "   <<  posLast
+                    <<  " ("    <<  (cbRead * 100 / fileLen)
+                    <<  " %) [" <<  fileLen <<  "]";
+    }
+    const   FileLength  cbRems  = (posLast - cbRead);
+    std::cerr   <<  "\rINFO: read "
+                <<  cbRead  <<  " / "   <<  posLast
+                <<  " ("    <<  (cbRead * 100 / fileLen)
+                <<  " %) [" <<  fileLen <<  "]"
+                <<  std::endl;
+    std::cerr   <<  "\nINFO: cbRems = " <<  cbRems  <<  std::endl;
+
+    if ( cbRems > 0 ) {
+        retErr  = mmap.remapToFile(cbRead, cbRems);
+        hash.updateHash(mmap.getAddress(), cbRems);
+        cbRead  += cbRems;
+    }
+    std::cerr   <<  "\rINFO: read "
+               <<  cbRead  <<  " / "   <<  posLast
+                <<  " ("    <<  (cbRead * 100 / fileLen)
+                <<  " %) [" <<  fileLen <<  "]"
+                <<  std::endl;
+
+    if ( cbRead < fileLen ) {
+        //  途中の場合は、その時点での内部状態を表示。  //
+        std::cout   <<  hash.saveHash();
+        retErr  = ErrCode::PAUSED;
+    } else {
+        //  最後まで到達していたら終了処理を行う。  //
+        reg = hash.finalizeHash();
 
     for ( int i = 0; i < 4; ++ i ) {
         const  MD5::MD5::MDWordType val = reg.words[i];
@@ -69,8 +110,31 @@ computeHash(
                 ((val >> 24) & 0xFF)
         );
     }
-    std::cout   <<  buf <<  " *"    <<  fileName    <<  std::endl;
-    return;
+    std::cout   <<  buf;
+    if ( cbRead < fileLen ) {
+        sprintf(buf, " 0x%08lx,", cbRead);
+        std::cout   <<  buf;
+    }
+        retErr  = ErrCode::SUCCESS;
+    }
+    std::cout   <<  " *"    <<  resInfo.targetFile  <<  std::endl;
+
+    return ( retErr );
+}
+
+ErrCode
+computeHash(
+        const  std::string      &fileName,
+        const  Common::AppOpts  &appOpts)
+{
+    Common::ResumeInfo  resInfo;
+
+    resInfo.binaryMode  = appOpts.binaryMode;
+    resInfo.resumeOffs  = 0;
+    resInfo.processLen  = appOpts.pauseSize;
+    resInfo.targetFile  = fileName;
+
+    return  runCalcHash(resInfo, appOpts.bufferSize, appOpts);
 }
 
 int  main(int argc, char * argv[])
@@ -78,9 +142,14 @@ int  main(int argc, char * argv[])
     Common::AppOpts     appOpts;
     Common::parseCommandLineArgs(appOpts, argc, argv);
 
+    ErrCode     retErr  = ErrCode::SUCCESS;
+
     for ( size_t i = 0; i < appOpts.targetFiles.size(); ++ i ) {
-        computeHash(appOpts.targetFiles[i]);
+        const  ErrCode  ec  = computeHash(appOpts.targetFiles[i], appOpts);
+        if ( ec != ErrCode::SUCCESS ) {
+            retErr  = ec;
+        }
     }
 
-    return ( 0 );
+    return ( static_cast<int>(retErr) );
 }

@@ -20,8 +20,12 @@
 
 #include    "Hashes/MD5/MD5.h"
 
+#include    "Hashes/Common/AppOpts.h"
+
 #include    <cassert>
+#include    <iostream>
 #include    <memory.h>
+#include    <sstream>
 
 #include    "Sin.tbl"
 
@@ -96,6 +100,55 @@ MD5::~MD5()
 //
 
 //----------------------------------------------------------------
+//    ハッシュ値の計算を完了する。
+//
+
+MD5::MDCode
+MD5::finalizeHash()
+{
+    BtByte  bits[8];
+
+    FileLength  cbByte  = (this->m_context.numByte);
+    const   FileLength  cbBits  = (cbByte << 3);
+
+    bits[0] = ((cbBits      ) & 0xFF);
+    bits[1] = ((cbBits >>  8) & 0xFF);
+    bits[2] = ((cbBits >> 16) & 0xFF);
+    bits[3] = ((cbBits >> 24) & 0xFF);
+    bits[4] = ((cbBits >> 32) & 0xFF);
+    bits[5] = ((cbBits >> 40) & 0xFF);
+    bits[6] = ((cbBits >> 48) & 0xFF);
+    bits[7] = ((cbBits >> 56) & 0xFF);
+
+    //  パディングを実施。  //
+    cbByte  &= PROC_BYTES_MASK;
+    const   FileLength  padLen  = (120 - cbByte) & PROC_BYTES_MASK;
+    updateHash(s_tblPadding, padLen);
+
+    //  パディング前のビット数を追加。  //
+    updateHash(bits, sizeof(bits));
+
+    return  getHashValue();
+}
+
+//----------------------------------------------------------------
+//    計算したハッシュ値を取得する。
+//
+
+MD5::MDCode
+MD5::getHashValue()  const
+{
+    MDCode  output;
+
+    output.words[0] = this->m_context.regs[0];
+    output.words[1] = this->m_context.regs[1];
+    output.words[2] = this->m_context.regs[2];
+    output.words[3] = this->m_context.regs[3];
+
+    return ( output );
+}
+
+//----------------------------------------------------------------
 //    ハッシュ値の計算バッファを初期化する。
 //
 
@@ -109,6 +162,100 @@ MD5::initializeHash()
     this->m_context.numByte = 0;
     memset(this->m_context.buffer, 0, sizeof(this->m_context.buffer));
 
+    return ( ErrCode::SUCCESS );
+}
+
+//----------------------------------------------------------------
+//    ハッシュ値の計算を保存して中断する。
+//
+
+std::string
+MD5::saveHash()  const
+{
+    char    buf[256];
+    for ( int i = 0; i < NUM_WORD_REGS; ++ i ) {
+        const   MDWordType  val = this->m_context.regs[i];
+        sprintf(buf + (i * 9), "%08x ", val);
+    }
+
+    std::stringstream   ss;
+    ss  <<  buf;
+
+    //  処理したバイト数も必要。    //
+    sprintf(buf, "0x%016lx,", (this->m_context.numByte & ~PROC_BYTES_MASK));
+    ss  <<  buf;
+
+    return  ss.str();
+}
+
+//----------------------------------------------------------------
+//    中断したハッシュ値の計算を再開する。
+//
+
+ErrCode
+MD5::resumeHash(
+        const   MDCode      regs,
+        const   FileLength  cbSize)
+{
+    this->m_context.regs[0] = regs.words[0];
+    this->m_context.regs[1] = regs.words[1];
+    this->m_context.regs[2] = regs.words[2];
+    this->m_context.regs[3] = regs.words[3];
+
+    this->m_context.numByte = cbSize;
+
+    return ( ErrCode::SUCCESS );
+}
+
+//----------------------------------------------------------------
+//    中断したハッシュ値の計算を再開する。
+//
+
+ErrCode
+MD5::resumeHash(
+        const  std::string  &resText,
+        Common::ResumeInfo  &resInfo)
+{
+    const  char  *  ptr = resText.c_str();
+    for ( int i = 0; i < NUM_WORD_REGS; ++ i ) {
+        MDWordType  val = 0;
+
+        for ( int cnt = 0; cnt < 8; ++ cnt ) {
+            const char  tmp = *ptr;
+            BtByte      b1  = 0;
+            if ( ('0' <= tmp) && (tmp <= '9') ) {
+                b1  = (tmp - '0');
+            } else if ( ('A' <= tmp) && (tmp <= 'Z') ) {
+                b1  = (tmp - 'A' + 10);
+            } else if ( ('a' <= tmp) && (tmp <= 'z') ) {
+                b1  = (tmp - 'a' + 10);
+            }
+            ++  ptr;
+            val = (val << 4) | (b1 & 0x0F);
+        }
+        this->m_context.regs[i] = val;
+
+        assert(*ptr == ' ');
+        ++  ptr;
+    }
+
+    //  処理済みのバイト数を取得する。  //
+    size_t  idx = 0;
+    const  unsigned  long   val = std::stoull(ptr, &idx, 0);
+    if ( idx != 18 ) {
+        std::cerr   <<  "Invalid resume format : "  <<  resText <<  std::endl;
+        return ( ErrCode::FAILURE );
+    }
+
+    if ( (val & PROC_BYTES_MASK) ) {
+        std::cerr   <<  "Bad resume offset : "  <<  val <<  std::endl;
+        return ( ErrCode::FAILURE );
+    } else {
+        std::cerr   <<  "INFO: resume from : "  <<  val <<  std::endl;
+    }
+
+    this->m_context.numByte = static_cast<FileLength>(val);
+    resInfo.resumeOffs  = this->m_context.numByte;
     return ( ErrCode::SUCCESS );
 }
 
@@ -173,55 +320,6 @@ MD5::updateHash(
 #endif
 
     return ( ErrCode::SUCCESS );
-}
-
-//----------------------------------------------------------------
-//    ハッシュ値の計算を完了する。
-//
-
-MD5::MDCode
-MD5::finalizeHash()
-{
-    BtByte  bits[8];
-
-    FileLength  cbByte  = (this->m_context.numByte);
-    const   FileLength  cbBits  = (cbByte << 3);
-
-    bits[0] = ((cbBits      ) & 0xFF);
-    bits[1] = ((cbBits >>  8) & 0xFF);
-    bits[2] = ((cbBits >> 16) & 0xFF);
-    bits[3] = ((cbBits >> 24) & 0xFF);
-    bits[4] = ((cbBits >> 32) & 0xFF);
-    bits[5] = ((cbBits >> 40) & 0xFF);
-    bits[6] = ((cbBits >> 48) & 0xFF);
-    bits[7] = ((cbBits >> 56) & 0xFF);
-
-    //  パディングを実施。  //
-    cbByte  &= PROC_BYTES_MASK;
-    const   FileLength  padLen  = (120 - cbByte) & PROC_BYTES_MASK;
-    updateHash(s_tblPadding, padLen);
-
-    //  パディング前のビット数を追加。  //
-    updateHash(bits, sizeof(bits));
-
-    return  getHashValue();
-}
-
-//----------------------------------------------------------------
-//    計算したハッシュ値を取得する。
-//
-
-MD5::MDCode
-MD5::getHashValue()  const
-{
-    MDCode  output;
-
-    output.words[0] = this->m_context.regs[0];
-    output.words[1] = this->m_context.regs[1];
-    output.words[2] = this->m_context.regs[2];
-    output.words[3] = this->m_context.regs[3];
-
-    return ( output );
 }
 
 //========================================================================

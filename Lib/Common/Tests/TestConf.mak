@@ -5,6 +5,7 @@
 
 extra_tests             =
 TESTS                   =  \
+        FileDescriptorTest      \
         HashesSettingsTest      \
         ${extra_tests}
 
@@ -31,4 +32,5 @@ test_ldflags_common         +=
 ##    Test Programs.
 ##
 
+FileDescriptorTest_SOURCES      =  FileDescriptorTest.cpp
 HashesSettingsTest_SOURCES      =  HashesSettingsTest.cpp

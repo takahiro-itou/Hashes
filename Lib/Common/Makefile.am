@@ -24,6 +24,8 @@ extra_noinst_header_files   =
 
 library_source_files        +=  \
         AppOpts.cpp                    \
+        FileDescriptor.cpp             \
+        MmapUtils.cpp                  \
         SampleDocument.cpp             \
         ${extra_library_source_files}
 
@@ -38,9 +40,11 @@ dist_noinst_header_files    +=  \
 
 inclib_header_files         +=  \
         ${inclib_source_dir}/AppOpts.h          \
-        ${inclib_source_dir}/SampleDocument.h   \
+        ${inclib_source_dir}/FileDescriptor.h   \
         ${inclib_source_dir}/HashesSettings.h   \
         ${inclib_source_dir}/HashesTypes.h      \
+        ${inclib_source_dir}/MmapUtils.h        \
+        ${inclib_source_dir}/SampleDocument.h   \
         ${extra_library_header_files}
 
 inclib_nodist_header_files  +=

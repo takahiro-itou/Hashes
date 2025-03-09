@@ -47,11 +47,26 @@ namespace  Common  {
 
 typedef     std::vector<std::string>    StringArray;
 
+struct  ResumeInfo  {
+    Boolean     binaryMode;
+    FileLength  resumeOffs;
+    FileLength  processLen;
+    std::string targetFile;
+
+    ResumeInfo()
+        : binaryMode(BOOL_TRUE),
+          resumeOffs(0),
+          processLen(0),
+          targetFile( )
+    { }
+};
+
 struct  AppOpts  {
     Boolean     binaryMode;
     Boolean     textMode;
     Boolean     checkMode;
     Boolean     flagIgnore;
+    FileLength  bufferSize;
     FileLength  pauseSize;
     std::string resumeInfo;
     StringArray targetFiles;
@@ -61,7 +76,8 @@ struct  AppOpts  {
           textMode(BOOL_FALSE),
           checkMode(BOOL_FALSE),
           flagIgnore(BOOL_FALSE),
-          pauseSize(0),
+          bufferSize(8 * 1024 * 1024),
+          pauseSize (0),
           resumeInfo(),
           targetFiles()
     { }

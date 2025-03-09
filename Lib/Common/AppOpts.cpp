@@ -20,6 +20,7 @@
 
 #include    "Hashes/Common/AppOpts.h"
 
+#include    <cstdlib>
 #include    <getopt.h>
 #include    <iostream>
 
@@ -28,6 +29,52 @@ HASHES_NAMESPACE_BEGIN
 namespace  Common  {
 
 namespace  {
+
+inline  FileLength
+parseSizeText(
+        const  std::string  &optarg,
+        ErrCode             &retErr)
+{
+    FileLength  sfactor = 1;
+    size_t  idx = 0;
+    const  unsigned  long   val = std::stoull(optarg, &idx, 0);
+
+    if ( idx != optarg.size() ) {
+        for ( ; idx < optarg.size(); ++ idx ) {
+            if ( optarg[idx] == 'b' || optarg[idx] == 'B' ) {
+                ++  idx;
+                break;
+            }
+
+            switch ( optarg[idx] ) {
+            case  'g':
+            case  'G':
+                sfactor *= 1024;
+                //  no  break;
+            case  'm':
+            case  'M':
+                sfactor *= 1024;
+                //  no  break;
+            case  'k':
+            case  'K':
+                sfactor *= 1024;
+                break;
+            }
+        }
+    }
+    if ( idx != optarg.size() ) {
+        std::cerr   <<  "Invalid argument: "
+                    <<  optarg
+                    <<  " at " <<   idx
+                    <<  optarg[idx]
+                    <<  "(" <<  optarg.size() << ")"
+                    <<  std::endl;
+        retErr  = ErrCode::FAILURE;
+    }
+
+    retErr  = ErrCode::SUCCESS;
+    return ( val * sfactor );
+}
 
 }   //  End of (Unnamed) namespace.
 
@@ -53,12 +100,13 @@ parseCommandLineArgs(
         { 0, 0, 0, 0 },
     };
 
+    ErrCode retErr;
     int     c;
     int     lo_index;
 
     for (;;) {
         c = getopt_long(
-                argc, argv, "bct", long_opts, &lo_index);
+                argc, argv, "bcp:r:s:t", long_opts, &lo_index);
         if ( c == -1 ) {
             break;
         }
@@ -81,11 +129,16 @@ parseCommandLineArgs(
             appOpts.checkMode   = BOOL_TRUE;
             break;
         case  'p':
+            appOpts.pauseSize   = parseSizeText(optarg, retErr);
             break;
         case  'r':
             appOpts.resumeInfo  = std::string(optarg);
             break;
         case  's':
+            appOpts.bufferSize  = parseSizeText(optarg, retErr);
+            if ( appOpts.bufferSize <= 16 ) {
+                appOpts.bufferSize  = 16;
+            }
             break;
         case  't':
             appOpts.textMode    = BOOL_TRUE;
