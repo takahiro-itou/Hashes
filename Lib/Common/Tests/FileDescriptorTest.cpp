@@ -21,7 +21,7 @@
 #include    "TestDriver.h"
 #include    "Hashes/Common/FileDescriptor.h"
 
-#include    <stdio.h>
+#include    <iostream>
 #include    <unistd.h>
 
 
