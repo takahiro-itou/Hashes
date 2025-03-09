@@ -30,25 +30,27 @@
 
 using   namespace   HASHES_NAMESPACE;
 
-void
-computeHash(
-        const  std::string      &fileName,
-        const  Common::AppOpts  &appOpts)
+MD5::MD5::MDCode
+runCalcHash(
+        Common::ResumeInfo  &resInfo,
+        const  FileLength   cbBlock)
 {
     MD5::MD5            hash;
     MD5::MD5::MDCode    reg;
     Common::MmapUtils   mmap;
-    char                buf[32];
+    char                buf[64];
+
     FileLength          cbRead  = 0;
-    const   FileLength  cbBlock = appOpts.bufferSize;
-    const   FileLength  cbPause = appOpts.pauseSize;
+    const   FileLength  cbPause = resInfo.processLen;
     ErrCode             retErr;
 
     std::cerr   <<  "INFO: BufferSize = "  <<  cbBlock  <<  std::endl;
 
-    hash.initializeHash();
+    if ( resInfo.resumeOffs == 0 ) {
+        hash.initializeHash();
+    }
 
-    retErr  = mmap.setupMappingToFile(fileName.c_str());
+    retErr  = mmap.setupMappingToFile(resInfo.targetFile.c_str());
     if ( retErr != ErrCode::SUCCESS ) {
         return;
     }
@@ -73,6 +75,7 @@ computeHash(
                 <<  cbRead  <<  " / "   <<  fileLen
                 <<  " ("    <<  (cbRead * 100 / fileLen)
                 <<  std::endl;
+
     if ( cbRead < fileLen ) {
         //  途中の場合は、その時点での内部状態を表示。  //
         reg = hash.getHashValue();
@@ -91,8 +94,29 @@ computeHash(
                 ((val >> 24) & 0xFF)
         );
     }
-    std::cout   <<  buf <<  " *"    <<  fileName    <<  std::endl;
-    return;
+    std::cout   <<  buf;
+    if ( cbRead < fileLen ) {
+        sprintf(buf, " 0x%08x,", cbRead);
+        std::cout   <<  buf;
+    }
+    std::cout   <<  " *"    <<  fileName    <<  std::endl;
+
+    return ( reg )
+}
+
+void
+computeHash(
+        const  std::string      &fileName,
+        const  Common::AppOpts  &appOpts)
+{
+    Common::ResumeInfo  resInfo;
+
+    resInfo.binaryMode  = appOpts.binaryMode;
+    resInfo.resumeOffs  = 0;
+    resInfo.processLen  = appOpts.pauseSize;
+    resInfo.targetFile  = fileName;
+
+    runCalcHash(resumeInfo, appOpts.bufferSize)
 }
 
 int  main(int argc, char * argv[])
