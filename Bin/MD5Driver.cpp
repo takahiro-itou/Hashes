@@ -52,7 +52,7 @@ runCalcHash(
 
     retErr  = mmap.setupMappingToFile(resInfo.targetFile.c_str());
     if ( retErr != ErrCode::SUCCESS ) {
-        return;
+        return  reg;
     }
     const   FileLength  fileLen = mmap.getFileSize();
 
@@ -96,12 +96,12 @@ runCalcHash(
     }
     std::cout   <<  buf;
     if ( cbRead < fileLen ) {
-        sprintf(buf, " 0x%08x,", cbRead);
+        sprintf(buf, " 0x%08lx,", cbRead);
         std::cout   <<  buf;
     }
-    std::cout   <<  " *"    <<  fileName    <<  std::endl;
+    std::cout   <<  " *"    <<  resInfo.targetFile  <<  std::endl;
 
-    return ( reg )
+    return ( reg );
 }
 
 void
@@ -116,7 +116,7 @@ computeHash(
     resInfo.processLen  = appOpts.pauseSize;
     resInfo.targetFile  = fileName;
 
-    runCalcHash(resumeInfo, appOpts.bufferSize)
+    runCalcHash(resInfo, appOpts.bufferSize);
 }
 
 int  main(int argc, char * argv[])
