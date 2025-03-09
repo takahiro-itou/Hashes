@@ -101,7 +101,7 @@ parseCommandLineArgs(
 
     for (;;) {
         c = getopt_long(
-                argc, argv, "bcprst", long_opts, &lo_index);
+                argc, argv, "bcp:r:s:t", long_opts, &lo_index);
         if ( c == -1 ) {
             break;
         }
