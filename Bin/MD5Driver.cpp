@@ -41,6 +41,7 @@ computeHash(
     char                buf[32];
     FileLength          cbRead  = 0;
     const   FileLength  cbBlock = appOpts.bufferSize;
+    const   FileLength  cbPause = appOpts.pauseSize;
     ErrCode             retErr;
 
     std::cerr   <<  "INFO: BufferSize = "  <<  cbBlock  <<  std::endl;
@@ -72,7 +73,13 @@ computeHash(
                 <<  cbRead  <<  " / "   <<  fileLen
                 <<  " ("    <<  (cbRead * 100 / fileLen)
                 <<  std::endl;
-    reg = hash.finalizeHash();
+    if ( cbRead < fileLen ) {
+        //  途中の場合は、その時点での内部状態を表示。  //
+        reg = hash.getHashValue();
+    } else {
+        //  最後まで到達していたら終了処理を行う。  //
+        reg = hash.finalizeHash();
+    }
 
     for ( int i = 0; i < 4; ++ i ) {
         const  MD5::MD5::MDWordType val = reg.words[i];
