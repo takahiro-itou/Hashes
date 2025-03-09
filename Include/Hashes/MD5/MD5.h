@@ -30,6 +30,13 @@
 
 
 HASHES_NAMESPACE_BEGIN
+
+//  クラスの前方宣言。  //
+namespace  Common  {
+class   ResumeInfo;
+}   //  End of namespace  Common
+
+
 namespace  MD5  {
 
 //========================================================================
@@ -174,6 +181,21 @@ public:
     resumeHash(
             const   MDCode      regs,
             const   FileLength  cbSize);
+
+    //----------------------------------------------------------------
+    /**   中断したハッシュ値の計算を再開する。
+    **
+    **  @param [in] resText
+    **  @param[out] resInfo
+    **  @return     エラーコードを返す。
+    **      -   異常終了の場合は、
+    **          エラーの種類を示す非ゼロ値を返す。
+    **      -   正常終了の場合は、ゼロを返す。
+    **/
+    ErrCode
+    resumeHash(
+            const  std::string  &resText,
+            Common::ResumeInfo  &resInfo);
 
     //----------------------------------------------------------------
     /**   ハッシュ値の計算バッファを更新する。

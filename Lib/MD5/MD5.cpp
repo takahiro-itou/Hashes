@@ -20,7 +20,10 @@
 
 #include    "Hashes/MD5/MD5.h"
 
+#include    "Hashes/Common/AppOpts.h"
+
 #include    <cassert>
+#include    <iostream>
 #include    <memory.h>
 #include    <sstream>
 
@@ -172,13 +175,7 @@ MD5::saveHash()  const
     char    buf[256];
     for ( int i = 0; i < NUM_WORD_REGS; ++ i ) {
         const   MDWordType  val = this->m_context.regs[i];
-        sprintf(buf + (i << 3),
-                "%02x%02x%02x%02x",
-                ((val      ) & 0xFF),
-                ((val >>  8) & 0xFF),
-                ((val >> 16) & 0xFF),
-                ((val >> 24) & 0xFF)
-        );
+        sprintf(buf + (i << 3), "%08x", val);
     }
 
     std::stringstream   ss;
@@ -207,6 +204,55 @@ MD5::resumeHash(
 
     this->m_context.numByte = cbSize;
 
+    return ( ErrCode::SUCCESS );
+}
+
+//----------------------------------------------------------------
+//    中断したハッシュ値の計算を再開する。
+//
+
+ErrCode
+MD5::resumeHash(
+        const  std::string  &resText,
+        Common::ResumeInfo  &resInfo)
+{
+    const  char  *  ptr = resText.c_str();
+    for ( int i = 0; i < NUM_WORD_REGS; ++ i ) {
+        MDWordType  val = 0;
+
+        for ( int cnt = 0; cnt < 8; ++ cnt ) {
+            const char  tmp = *ptr;
+            BtByte      b1  = 0;
+            if ( ('0' <= tmp) && (tmp <= '9') ) {
+                b1  = (tmp - '0');
+            } else if ( ('A' <= tmp) && (tmp <= 'Z') ) {
+                b1  = (tmp - 'A' + 10);
+            } else if ( ('a' <= tmp) && (tmp <= 'z') ) {
+                b1  = (tmp - 'a' + 10);
+            }
+            ++  ptr;
+            val = (val << 4) | (b1 & 0x0F);
+        }
+        this->m_context.regs[i] = val;
+    }
+
+    assert(*ptr == ' ');
+    ++  ptr;
+
+    //  処理済みのバイト数を取得する。  //
+    size_t  idx = 0;
+    const  unsigned  long   val = std::stoull(ptr, &idx, 0);
+    if ( idx != 10 ) {
+        std::cerr   <<  "Invalid resume format : "  <<  resText <<  std::endl;
+        return ( ErrCode::FAILURE );
+    }
+
+    if ( (val & PROC_BYTES_MASK) ) {
+        std::cerr   <<  "Bad resume offset : "  <<  val <<  std::endl;
+        return ( ErrCode::FAILURE );
+    }
+
+    resInfo.resumeOffs  = this->m_context.numByte = static_cast<FileLength>(val);
     return ( ErrCode::SUCCESS );
 }
 
