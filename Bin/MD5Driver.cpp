@@ -40,13 +40,13 @@ runCalcHash(
     Common::MmapUtils   mmap;
     char                buf[64];
 
-    FileLength          cbRead  = 0;
+    FileLength          cbRead  = resInfo.resumeOffs;
     const   FileLength  cbPause = resInfo.processLen;
     ErrCode             retErr;
 
     std::cerr   <<  "INFO: BufferSize = "  <<  cbBlock  <<  std::endl;
 
-    if ( resInfo.resumeOffs == 0 ) {
+    if ( cbRead == 0 ) {
         hash.initializeHash();
     }
 
@@ -54,26 +54,30 @@ runCalcHash(
     if ( retErr != ErrCode::SUCCESS ) {
         return  reg;
     }
-    const   FileLength  fileLen = mmap.getFileSize();
 
-    while ( cbRead + cbBlock <= fileLen ) {
+    const   FileLength  fileLen = mmap.getFileSize();
+    FileLength  cbTail  = (cbPause > 0 ? (cbRead + cbPause) : fileLen);
+
+    const   FileLength  posLast = (cbTail < fileLen ? cbTail : fileLen);
+    while ( cbRead + cbBlock <= posLast ) {
         retErr  = mmap.remapToFile(cbRead, cbBlock);
         hash.updateHash(mmap.getAddress(), cbBlock);
         cbRead  += cbBlock;
         std::cerr   <<  "\rINFO: read "
                     <<  cbRead  <<  " / "   <<  fileLen
                     <<  " ("    <<  (cbRead * 100 / fileLen)
-                    <<  " %)";
+                    <<  " %) [" <<  fileLen <<  "]";
     }
-    const   FileLength  cbRems  = (fileLen - cbRead);
+    const   FileLength  cbRems  = (posLast - cbRead);
     if ( cbRead > 0 ) {
         retErr  = mmap.remapToFile(cbRead, cbRems);
         hash.updateHash(mmap.getAddress(), cbRems);
         cbRead  += cbRems;
     }
     std::cerr   <<  "\rINFO: read "
-                <<  cbRead  <<  " / "   <<  fileLen
+               <<  cbRead  <<  " / "   <<  posLast
                 <<  " ("    <<  (cbRead * 100 / fileLen)
+                <<  " %) [" <<  fileLen <<  "]"
                 <<  std::endl;
 
     if ( cbRead < fileLen ) {
