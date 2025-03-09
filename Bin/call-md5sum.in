@@ -1,0 +1,37 @@
+#!/bin/bash  -u
+
+current_srcfile="${BASH_SOURCE:-$0}"
+script_dir=$(readlink -f "$(dirname "${current_srcfile}")")
+
+maxsize=4G
+bufsize=8M
+file=$1
+
+set  +e
+
+bytes=$(stat -c "%s" "${file}")
+echo  "File ${file}, size = ${bytes}"  1>&2
+
+cmd="${script_dir}/md5-driver"
+cmd+=" -p ${maxsize}"
+cmd+=" -s ${bufsize}"
+cmd+=" ${file}"
+echo "Run: ${cmd}"  1>&2
+output=$(${cmd})
+retErr=$?
+echo "Exit Status: ${retErr}"  1>&2
+
+while [[ ${retErr} -eq 4 ]] ; do
+    resume="${output}"
+    cmd="${script_dir}/md5-driver"
+    cmd+=" -p ${maxsize}"
+    cmd+=" -r '${resume}'"
+    cmd+=" -s ${bufsize}"
+    cmd+=" ${file}"
+    echo  "Run: ${cmd}"  1>&2
+    output=$(eval ${cmd})
+    retErr=$?
+    echo "Exit Status: ${retErr}"  1>&2
+
+done
+echo  "${output}"
