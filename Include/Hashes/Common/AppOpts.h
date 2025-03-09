@@ -52,6 +52,13 @@ struct  ResumeInfo  {
     FileLength  resumeOffs;
     FileLength  processLen;
     std::string targetFile;
+
+    ResumeInfo()
+        : binaryMode(BOOL_TRUE),
+          resumeOffs(0),
+          processLen(0),
+          targetFile( )
+    { }
 };
 
 struct  AppOpts  {
