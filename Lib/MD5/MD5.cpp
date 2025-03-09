@@ -185,7 +185,7 @@ MD5::saveHash()  const
     ss  <<  buf;
 
     //  処理したバイト数も必要。    //
-    sprintf(buf, " 0x%08lx,", (this->m_context.numByte & PROC_BYTES_MASK));
+    sprintf(buf, " 0x%08lx,", (this->m_context.numByte & ~PROC_BYTES_MASK));
     ss  <<  buf;
 
     return  ss.str();
