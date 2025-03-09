@@ -23,6 +23,11 @@
 
 #include    "Hashes/Common/HashesTypes.h"
 
+#if !defined( HASHES_SYS_INCLUDED_STRING )
+#    include    <string>
+#    define   HASHES_SYS_INCLUDED_STRING
+#endif
+
 
 HASHES_NAMESPACE_BEGIN
 namespace  MD5  {
@@ -147,6 +152,28 @@ public:
     **/
     ErrCode
     initializeHash();
+
+    //----------------------------------------------------------------
+    /**   ハッシュ値の計算を保存して中断する。
+    **
+    **/
+    std::string
+    saveHash()  const;
+
+    //----------------------------------------------------------------
+    /**   中断したハッシュ値の計算を再開する。
+    **
+    **  @param [in] regs
+    **  @param [in] cbSize
+    **  @return     エラーコードを返す。
+    **      -   異常終了の場合は、
+    **          エラーの種類を示す非ゼロ値を返す。
+    **      -   正常終了の場合は、ゼロを返す。
+    **/
+    ErrCode
+    resumeHash(
+            const   MDCode      regs,
+            const   FileLength  cbSize);
 
     //----------------------------------------------------------------
     /**   ハッシュ値の計算バッファを更新する。

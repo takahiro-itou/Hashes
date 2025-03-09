@@ -22,6 +22,7 @@
 
 #include    <cassert>
 #include    <memory.h>
+#include    <sstream>
 
 #include    "Sin.tbl"
 
@@ -157,6 +158,54 @@ MD5::initializeHash()
     this->m_context.regs[3] = 0x10325476;
     this->m_context.numByte = 0;
     memset(this->m_context.buffer, 0, sizeof(this->m_context.buffer));
+
+    return ( ErrCode::SUCCESS );
+}
+
+//----------------------------------------------------------------
+//    ハッシュ値の計算を保存して中断する。
+//
+
+std::string
+MD5::saveHash()  const
+{
+    char    buf[256];
+    for ( int i = 0; i < NUM_WORD_REGS; ++ i ) {
+        const   MDWordType  val = this->m_context.regs[i];
+        sprintf(buf + (i << 3),
+                "%02x%02x%02x%02x",
+                ((val      ) & 0xFF),
+                ((val >>  8) & 0xFF),
+                ((val >> 16) & 0xFF),
+                ((val >> 24) & 0xFF)
+        );
+    }
+
+    std::stringstream   ss;
+    ss  <<  buf;
+
+    //  処理したバイト数も必要。    //
+    sprintf(buf, " 0x%08lx,", (this->m_context.numByte & PROC_BYTES_MASK));
+    ss  <<  buf;
+
+    return  ss.str();
+}
+
+//----------------------------------------------------------------
+//    中断したハッシュ値の計算を再開する。
+//
+
+ErrCode
+MD5::resumeHash(
+        const   MDCode      regs,
+        const   FileLength  cbSize)
+{
+    this->m_context.regs[0] = regs.words[0];
+    this->m_context.regs[1] = regs.words[1];
+    this->m_context.regs[2] = regs.words[2];
+    this->m_context.regs[3] = regs.words[3];
+
+    this->m_context.numByte = cbSize;
 
     return ( ErrCode::SUCCESS );
 }
