@@ -1,0 +1,24 @@
+#!/bin/bash  -u
+
+current_srcfile="${BASH_SOURCE:-$0}"
+script_dir=$(readlink -f "$(dirname "${current_srcfile}")")
+
+maxsize=500M
+
+for file in "$@" ; do
+    bytes=$(stat -c "%s" "${file}")
+    echo  "File ${file}, size = ${bytes}"  1>&2
+
+    output=$("${script_dir}/md5-driver" -p ${maxsize}  ${file})
+    retErr=$?
+    echo "${retErr}"  1>&2
+
+    while [[ ${retErr} -eq 4 ]] ; do
+        resume="${output}"
+        output=$("${script_dir}/md5-driver" -p ${maxsize} -r "${resume}" "${file}")
+        retErr=$?
+        echo "${retErr}"  1>&2
+
+    done
+    echo  "${output}"
+done

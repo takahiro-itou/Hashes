@@ -156,10 +156,13 @@ dnl
 AC_CONFIG_FILES([
     Makefile
     Bin/Makefile
+    Bin/smd5sum
     Lib/Makefile
     Lib/.Config/Makefile
     Lib/Common/Makefile
     Lib/MD5/Makefile
+], [
+    chmod +x Bin/smd5sum
 ])
 
 AC_CONFIG_FILES([
