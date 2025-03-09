@@ -32,7 +32,8 @@ namespace  {
 
 inline  FileLength
 parseSizeText(
-        const  std::string  &optarg)
+        const  std::string  &optarg,
+        ErrCode             &retErr)
 {
     FileLength  sfactor = 1;
     size_t  idx = 0;
@@ -40,30 +41,33 @@ parseSizeText(
 
     if ( idx != optarg.size() ) {
         for ( size_t pos = 0; pos < optarg.size(); ++ pos ) {
+            if ( optarg[pos] == 'b' || optarg[pos] == 'B' ) {
+                ++  pos;
+                break;
+            }
+
             switch ( optarg[pos] ) {
+            case  'g':
+            case  'G':
+                sfactor *= 1024;
+                //  no  break;
+            case  'm':
+            case  'M':
+                sfactor *= 1024;
+                //  no  break;
             case  'k':
             case  'K':
                 sfactor *= 1024;
-                break;
-            case  'm':
-            case  'M':
-                sfactor *= (1024 * 1024);
-                break;
-            case  'g':
-            case  'G':
-                sfactor *= (1024 * 1024 * 1024);
-                break;
-            }
-            if ( optarg[pos] == 'b' || optarg[pos] == 'B' ) {
-                ++  pos;
                 break;
             }
         }
     }
     if ( idx != optarg.size() ) {
         std::cerr   <<  "Invalid argument: "    <<  optarg  <<  std::endl;
+        retErr  = ErrCode::FAILURE;
     }
 
+    retErr  = ErrCode::SUCCESS;
     return ( val * sfactor );
 }
 
