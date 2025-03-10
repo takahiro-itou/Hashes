@@ -93,11 +93,7 @@ runCalcHash(
         hash.updateHash(mmap.getAddress(), cbRems);
         cbRead  += cbRems;
     }
-    std::cerr   <<  "INFO: read "
-               <<  cbRead  <<  " / "   <<  posLast
-                <<  " ("    <<  (cbRead * 100 / fileLen)
-                <<  " %) [" <<  fileLen <<  "]"
-                <<  std::endl;
+    showProgress(cbRead, posLast, fileLen, std::cerr)   <<  std::endl;
 
     if ( cbRead < fileLen ) {
         //  途中の場合は、その時点での内部状態を表示。  //
