@@ -95,6 +95,7 @@ runCalcHash(
     if ( cbRead < fileLen ) {
         //  途中の場合は、その時点での内部状態を表示。  //
         std::cout   <<  hash.saveHash();
+        std::cout   <<  "*"    <<  resInfo.targetFile  <<  std::endl;
         retErr  = ErrCode::PAUSED;
     } else {
         //  最後まで到達していたら終了処理を行う。  //
@@ -111,9 +112,10 @@ runCalcHash(
             );
         }
         std::cout   <<  buf;
+        std::cout   <<  " *"    <<  resInfo.targetFile  <<  std::endl;
         retErr  = ErrCode::SUCCESS;
     }
-    std::cout   <<  " *"    <<  resInfo.targetFile  <<  std::endl;
+
 
     return ( retErr );
 }

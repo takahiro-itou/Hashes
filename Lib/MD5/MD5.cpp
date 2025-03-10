@@ -175,7 +175,7 @@ MD5::saveHash()  const
     char    buf[256];
     for ( int i = 0; i < NUM_WORD_REGS; ++ i ) {
         const   MDWordType  val = this->m_context.regs[i];
-        sprintf(buf + (i * 9), "%08x ", val);
+        sprintf(buf + (i * 9), "%08x_", val);
     }
 
     std::stringstream   ss;
@@ -235,7 +235,7 @@ MD5::resumeHash(
         }
         this->m_context.regs[i] = val;
 
-        assert(*ptr == ' ');
+        assert(*ptr == '_');
         ++  ptr;
     }
 
