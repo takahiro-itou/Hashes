@@ -85,11 +85,7 @@ runCalcHash(
         showProgress(cbRead, posLast, fileLen, std::cerr);
     }
     const   FileLength  cbRems  = (posLast - cbRead);
-    std::cerr   <<  "\rINFO: read "
-                <<  cbRead  <<  " / "   <<  posLast
-                <<  " ("    <<  (cbRead * 100 / fileLen)
-                <<  " %) [" <<  fileLen <<  "]"
-                <<  std::endl;
+    showProgress(cbRead, posLast, fileLen, std::cerr)   <<  std::endl;
     std::cerr   <<  "INFO: cbRems = " <<  cbRems  <<  std::endl;
 
     if ( cbRems > 0 ) {
