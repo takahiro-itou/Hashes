@@ -30,6 +30,20 @@
 
 using   namespace   HASHES_NAMESPACE;
 
+std::ostream  &
+showProgress(
+        const   FileLength  cbRead,
+        const   FileLength  posLast,
+        const   FileLength  fileLen,
+        std::ostream       &outStr)
+{
+    outStr  <<  "\rINFO: read "
+            <<  cbRead  <<  " / "   <<  posLast
+            <<  " ("    <<  (cbRead * 100 / fileLen)
+            <<  " %) [" <<  fileLen <<  "]";
+    return ( outStr );
+}
+
 ErrCode
 runCalcHash(
         Common::ResumeInfo      &resInfo,
@@ -68,10 +82,7 @@ runCalcHash(
         retErr  = mmap.remapToFile(cbRead, cbBlock);
         hash.updateHash(mmap.getAddress(), cbBlock);
         cbRead  += cbBlock;
-        std::cerr   <<  "\rINFO: read "
-                    <<  cbRead  <<  " / "   <<  posLast
-                    <<  " ("    <<  (cbRead * 100 / fileLen)
-                    <<  " %) [" <<  fileLen <<  "]";
+        showProgress(cbRead, posLast, fileLen, std::cerr);
     }
     const   FileLength  cbRems  = (posLast - cbRead);
     std::cerr   <<  "\rINFO: read "
