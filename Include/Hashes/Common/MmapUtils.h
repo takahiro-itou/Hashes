@@ -13,15 +13,17 @@
 *************************************************************************/
 
 /**
-**      An Interface of MD5 class.
+**      An Interface of MmapUtils class.
 **
-**      @file       MD5/MD5.h
+**      @file       Common/MmapUtils.h
 **/
 
-#if !defined( HASHES_MD5_INCLUDED_MD5_H )
-#    define   HASHES_MD5_INCLUDED_MD5_H
+#if !defined( HASHES_COMMON_INCLUDED_MMAP_UTILS_H )
+#    define   HASHES_COMMON_INCLUDED_MMAP_UTILS_H
 
-#include    "Hashes/Common/HashesTypes.h"
+#if !defined( HASHES_COMMON_INCLUDED_FILE_DESCRIPTOR_H )
+#    include    "FileDescriptor.h"
+#endif
 
 #if !defined( HASHES_SYS_INCLUDED_STRING )
 #    include    <string>
@@ -30,60 +32,24 @@
 
 
 HASHES_NAMESPACE_BEGIN
+namespace  Common  {
 
 //  クラスの前方宣言。  //
-namespace  Common  {
-class   ResumeInfo;
-}   //  End of namespace  Common
-
-
-namespace  MD5  {
+class   FileDescriptor;
 
 //========================================================================
 //
-//    MD5  class.
+//    MmapUtils  class.
 //
 
-class  MD5
+class  MmapUtils
 {
 
 //========================================================================
 //
 //    Internal Type Definitions.
 //
-
 public:
-
-    enum  {
-        BLOCK_BYTES         = 64,
-        PROC_BYTES_MASK     = 0x3F,
-        NUM_WORD_REGS       = 4,
-        SIN_TABLE_SIZE      = 64,
-    };
-
-    /**   ワード型は 32 ビット。    **/
-    typedef     uint32_t        MDWordType;
-
-    /**   ハッシュ値を格納する型。  **/
-    struct  MDCode  {
-        MDWordType  words[NUM_WORD_REGS];
-    };
-
-private:
-
-    typedef     uint64_t        LengthType;
-
-    typedef     uint8_t         BtByte;
-
-    typedef     BtByte          BufferType[64];
-
-    /**   計算用バッファの型。  **/
-    struct  ContextRegister
-    {
-        MDWordType  regs[NUM_WORD_REGS];
-        LengthType  numByte;
-        BtByte      buffer[BLOCK_BYTES];
-    };
 
 //========================================================================
 //
@@ -96,14 +62,14 @@ public:
     **  （デフォルトコンストラクタ）。
     **
     **/
-    MD5();
+    MmapUtils();
 
     //----------------------------------------------------------------
     /**   インスタンスを破棄する
     **  （デストラクタ）。
     **
     **/
-    virtual  ~MD5();
+    virtual  ~MmapUtils();
 
 //========================================================================
 //
@@ -124,98 +90,125 @@ public:
 //
 //    Public Member Functions (Virtual Functions).
 //
-
-//========================================================================
-//
-//    Public Member Functions.
-//
 public:
 
     //----------------------------------------------------------------
-    /**   ハッシュ値の計算を完了する。
+    /**   ファイル名を指定してマップする。
     **
-    **    計算した値はキャッシュに保存しておく。
-    **
-    **  @return    計算した値を返す。
+    **  @param [in] fileName    ファイル名。
+    **  @param [in] offset      マップを開始する位置。
+    **  @param [in] cbSize      マップするバイト数。
+    **  @return     エラーコードを返す。
+    **      -   異常終了の場合は、
+    **          エラーの種類を示す非ゼロ値を返す。
+    **      -   正常終了の場合は、ゼロを返す。
     **/
-    MDCode
-    finalizeHash();
+    virtual  ErrCode
+    mapToFile(
+            const  std::string  &fileName,
+            const  FileLength   offset,
+            const  FileLength   cbSize);
 
     //----------------------------------------------------------------
-    /**   計算したハッシュ値を取得する。
+    /**   ファイルディスクリプタを指定してマップする。
     **
-    **  @return   計算した値をキャッシュから返す。
+    **  @param [in,out] fd        ディスクリプタ
+    **      マップが完了したらこのファイルは閉じられる。
+    **  @param [in]     offset    マップを開始する位置。
+    **  @param [in]     cbSize    マップするバイト数。
+    **  @return     エラーコードを返す。
+    **      -   異常終了の場合は、
+    **          エラーの種類を示す非ゼロ値を返す。
+    **      -   正常終了の場合は、ゼロを返す。
     **/
-    MDCode
-    getHashValue()  const;
+    virtual  ErrCode
+    mapToFile(
+            FileDescriptor      &fd,
+            const   FileLength  offset,
+            const   FileLength  cbSize);
 
     //----------------------------------------------------------------
-    /**   ハッシュ値の計算バッファを初期化する。
+    /**   マップを解除する。
     **
     **  @return     エラーコードを返す。
     **      -   異常終了の場合は、
     **          エラーの種類を示す非ゼロ値を返す。
     **      -   正常終了の場合は、ゼロを返す。
     **/
-    ErrCode
-    initializeHash();
+    virtual  ErrCode
+    releaseMapping();
 
     //----------------------------------------------------------------
-    /**   ハッシュ値の計算を保存して中断する。
+    /**   同じファイルに対して再度マップする。
     **
-    **/
-    std::string
-    saveHash()  const;
-
-    //----------------------------------------------------------------
-    /**   中断したハッシュ値の計算を再開する。
+    **    同じファイルなのでファイル名は省略する。
+    **  別のファイルに対してマップする時は mapToFile  を使う。
     **
-    **  @param [in] regs
+    **  @param [in] offset
     **  @param [in] cbSize
     **  @return     エラーコードを返す。
     **      -   異常終了の場合は、
     **          エラーの種類を示す非ゼロ値を返す。
     **      -   正常終了の場合は、ゼロを返す。
     **/
-    ErrCode
-    resumeHash(
-            const   MDCode      regs,
-            const   FileLength  cbSize);
+    virtual  ErrCode
+    remapToFile(
+            const  FileLength   offset,
+            const  FileLength   cbSize);
 
     //----------------------------------------------------------------
-    /**   中断したハッシュ値の計算を再開する。
+    /**   ファイルに対してマップの準備をする。
     **
-    **  @param [in] resText
-    **  @param[out] resInfo
+    **  @param [in] fileName    ファイル名。
     **  @return     エラーコードを返す。
     **      -   異常終了の場合は、
     **          エラーの種類を示す非ゼロ値を返す。
     **      -   正常終了の場合は、ゼロを返す。
     **/
-    ErrCode
-    resumeHash(
-            const  std::string  &resText,
-            Common::ResumeInfo  &resInfo);
+    virtual  ErrCode
+    setupMappingToFile(
+            const  std::string  &fileName);
 
-    //----------------------------------------------------------------
-    /**   ハッシュ値の計算バッファを更新する。
-    **
-    **  @param [in] inBuf   入力データのアドレス。
-    **  @param [in] cbBuf   入力データのバイト数。
-    **  @return     エラーコードを返す。
-    **      -   異常終了の場合は、
-    **          エラーの種類を示す非ゼロ値を返す。
-    **      -   正常終了の場合は、ゼロを返す。
-    **/
-    ErrCode
-    updateHash(
-            const   LpcReadBuf  inBuf,
-            const   FileLength  cbBuf);
+//========================================================================
+//
+//    Public Member Functions.
+//
 
 //========================================================================
 //
 //    Accessors.
 //
+public:
+
+    //----------------------------------------------------------------
+    /**   マップした領域の先頭を指すポインタを取得する。
+    **
+    **  @return     マップした領域の先頭アドレスを返す。
+    **/
+    LpWriteBuf
+    getAddress()  const
+    {
+        return ( this->m_ptrHead );
+    }
+
+    //----------------------------------------------------------------
+    /**   マップ対象のファイルサイズを取得する。
+    **
+    **  @return     ファイルサイズをバイト単位で返す。
+    **/
+    FileLength
+    getFileSize()  const;
+
+    //----------------------------------------------------------------
+    /**   マップした領域の長さを取得する。
+    **
+    **  @return     マップした領域のサイズをバイト単位で返す。
+    **/
+    FileLength
+    getMapSize()  const
+    {
+        return ( this->m_mapLen );
+    }
 
 //========================================================================
 //
@@ -226,28 +219,6 @@ public:
 //
 //    For Internal Use Only.
 //
-private:
-
-    //----------------------------------------------------------------
-    /**   定数テーブルの内容をコピーする。
-    **
-    **    単体テストクラスにテーブルの値を渡して
-    **  内容をチェックしてもらうための関数。
-    **/
-    static  void
-    copySinTable(uint32_t (&buf)[SIN_TABLE_SIZE]);
-
-    //----------------------------------------------------------------
-    /**   指定した 16 ワードブロックを処理する。
-    **
-    **  @param [in]     inBuf
-    **  @param [in,out] regs
-    **  @return     void.
-    **/
-    static  inline  void
-    processBlock(
-            const   LpcByteReadBuf  inBuf,
-            MDWordType              regs[NUM_WORD_REGS]);
 
 //========================================================================
 //
@@ -255,19 +226,37 @@ private:
 //
 private:
 
-    /**   計算用バッファ。  **/
-    ContextRegister     m_context;
+    /**   ファイルディスクリプタ。  **/
+    FileDescriptor      m_fd;
+
+    /**   マップした領域。          **/
+    LpWriteBuf          m_ptrBuf;
+
+    /**   マップした領域のサイズ。  **/
+    FileLength          m_mapLen;
+
+    FileLength          m_mapOffs;
+
+    /**   オフセット込みの先頭。    **/
+    LpWriteBuf          m_ptrHead;
+
+    /**   ページサイズ。    **/
+    const   long        m_pgSize;
 
 //========================================================================
 //
 //    Other Features.
 //
+private:
+    typedef     MmapUtils   This;
+    MmapUtils           (const  This  &);
+    This &  operator =  (const  This  &);
 public:
     //  テストクラス。  //
-    friend  class   MD5Test;
+    friend  class   MmapUtilsTest;
 };
 
-}   //  End of namespace  MD5
+}   //  End of namespace  Common
 HASHES_NAMESPACE_END
 
 #endif

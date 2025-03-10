@@ -15,11 +15,18 @@ Include (${common_cmake_dir}/BuildCommon/ConfigTarget.cmake)
 ##
 
 set(library_source_files
-       SampleDocument.cpp
+        AppOpts.cpp
+        FileDescriptor.cpp
+        MmapUtils.cpp
+        SampleDocument.cpp
 )
 
 set(inclib_header_files
-        ${inclib_source_dir}/LibraryProjectSettings.h
+        ${inclib_source_dir}/AppOpts.h
+        ${inclib_source_dir}/FileDescriptor.h
+        ${inclib_source_dir}/HashesSettings.h
+        ${inclib_source_dir}/HashesTypes.h
+        ${inclib_source_dir}/MmapUtils.h
         ${inclib_source_dir}/SampleDocument.h
 )
 

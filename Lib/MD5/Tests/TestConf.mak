@@ -5,15 +5,14 @@
 
 extra_tests             =
 TESTS                   =  \
-        FileDescriptorTest      \
-        HashesSettingsTest      \
+        MD5Test                 \
         ${extra_tests}
 
 ##
 ##    Test Configurations.
 ##
 
-target_testee_library       +=  -lhsCommon
+target_testee_library       +=  -lhsMD5
 
 dist_noinst_data_files      +=
 dist_noinst_header_files    +=
@@ -32,5 +31,5 @@ test_ldflags_common         +=
 ##    Test Programs.
 ##
 
-FileDescriptorTest_SOURCES      =  FileDescriptorTest.cpp
-HashesSettingsTest_SOURCES      =  HashesSettingsTest.cpp
+MD5Test_SOURCES             =  MD5Test.cpp
+

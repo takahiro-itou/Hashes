@@ -22,6 +22,10 @@ set(inclib_header_files
         ${inclib_source_dir}/MD5.h
 )
 
+set(module_needs_libraries
+        ${project_target_prefix}Common
+)
+
 ##----------------------------------------------------------------
 ##
 ##    ビルドとインストールの設定。
@@ -35,4 +39,4 @@ Include (${common_cmake_dir}/BuildCommon/Install.cmake)
 ##    テストの設定。
 ##
 
-# Add_SubDirectory (Tests)
+Add_SubDirectory (Tests)

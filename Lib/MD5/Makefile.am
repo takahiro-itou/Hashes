@@ -8,7 +8,7 @@
 ##
 
 module_dir_name     =  MD5
-# SUBDIRS             =  .  Tests
+SUBDIRS             =  .  Tests
 
 include  $(top_srcdir)/.M4/BuildCommon/DirList.inc
 include  $(top_srcdir)/.M4/BuildCommon/DefVars.inc
@@ -30,6 +30,7 @@ library_instantiations      +=
 library_inline_files        +=
 
 dist_noinst_data_files      +=  \
+        Sin.tbl                         \
         ${extra_noinst_data_files}
 
 dist_noinst_header_files    +=  \

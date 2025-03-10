@@ -1,0 +1,8 @@
+#!/bin/bash  -ue
+
+current_srcfile="${BASH_SOURCE:-$0}"
+script_dir=$(readlink -f "$(dirname "${current_srcfile}")")
+
+for file in "$@" ; do
+    time  ${script_dir}/call-md5sum  ${file}
+done
