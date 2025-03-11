@@ -30,6 +30,20 @@
 
 using   namespace   HASHES_NAMESPACE;
 
+std::ostream  &
+showProgress(
+        const   FileLength  cbRead,
+        const   FileLength  posLast,
+        const   FileLength  fileLen,
+        std::ostream       &outStr)
+{
+    outStr  <<  "\rINFO: read "
+            <<  cbRead  <<  " / "   <<  posLast
+            <<  " ("    <<  (cbRead * 100 / fileLen)
+            <<  " %) [" <<  fileLen <<  "]";
+    return ( outStr );
+}
+
 ErrCode
 runCalcHash(
         Common::ResumeInfo      &resInfo,
@@ -68,17 +82,10 @@ runCalcHash(
         retErr  = mmap.remapToFile(cbRead, cbBlock);
         hash.updateHash(mmap.getAddress(), cbBlock);
         cbRead  += cbBlock;
-        std::cerr   <<  "\rINFO: read "
-                    <<  cbRead  <<  " / "   <<  posLast
-                    <<  " ("    <<  (cbRead * 100 / fileLen)
-                    <<  " %) [" <<  fileLen <<  "]";
+        showProgress(cbRead, posLast, fileLen, std::cerr);
     }
     const   FileLength  cbRems  = (posLast - cbRead);
-    std::cerr   <<  "\rINFO: read "
-                <<  cbRead  <<  " / "   <<  posLast
-                <<  " ("    <<  (cbRead * 100 / fileLen)
-                <<  " %) [" <<  fileLen <<  "]"
-                <<  std::endl;
+    showProgress(cbRead, posLast, fileLen, std::cerr)   <<  std::endl;
     std::cerr   <<  "INFO: cbRems = " <<  cbRems  <<  std::endl;
 
     if ( cbRems > 0 ) {
@@ -86,11 +93,7 @@ runCalcHash(
         hash.updateHash(mmap.getAddress(), cbRems);
         cbRead  += cbRems;
     }
-    std::cerr   <<  "INFO: read "
-               <<  cbRead  <<  " / "   <<  posLast
-                <<  " ("    <<  (cbRead * 100 / fileLen)
-                <<  " %) [" <<  fileLen <<  "]"
-                <<  std::endl;
+    showProgress(cbRead, posLast, fileLen, std::cerr)   <<  std::endl;
 
     if ( cbRead < fileLen ) {
         //  途中の場合は、その時点での内部状態を表示。  //
