@@ -39,7 +39,8 @@ showProgress(
 {
     outStr  <<  "\rINFO: read "
             <<  cbRead  <<  " / "   <<  posLast
-            <<  " ("    <<  (cbRead * 100 / fileLen)
+            <<  " ("
+            <<  (fileLen > 0 ? (cbRead * 100 / fileLen) : 100)
             <<  " %) [" <<  fileLen <<  "]";
     return ( outStr );
 }
