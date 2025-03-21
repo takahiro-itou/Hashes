@@ -1,4 +1,4 @@
-#!/bin/bash  -ue
+#!/bin/bash  -u
 
 current_srcfile="${BASH_SOURCE:-$0}"
 script_dir=$(readlink -f "$(dirname "${current_srcfile}")")
