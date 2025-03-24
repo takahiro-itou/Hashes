@@ -122,7 +122,8 @@ MD5::finalizeHash()
 
     //  パディングを実施。  //
     cbByte  &= PROC_BYTES_MASK;
-    const   FileLength  padLen  = (120 - cbByte) & PROC_BYTES_MASK;
+    const   FileLength  padLen
+        = (cbByte < 56) ? (56 - cbByte) : (120 - cbByte);
     updateHash(s_tblPadding, padLen);
 
     //  パディング前のビット数を追加。  //

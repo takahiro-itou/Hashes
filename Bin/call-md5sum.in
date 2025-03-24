@@ -12,6 +12,11 @@ set  +e
 bytes=$(stat -c "%s" "${file}")
 echo  "File ${file}, size = ${bytes}"  1>&2
 
+if [[ -d "${file}" ]] ; then
+    echo  "${file} is directory. SKIP"  1>&2
+    exit  0
+fi
+
 cmd="${script_dir}/md5-driver"
 cmd+=" -p ${maxsize}"
 cmd+=" -s ${bufsize}"
@@ -32,6 +37,8 @@ while [[ ${retErr} -eq 4 ]] ; do
     output=$(eval ${cmd})
     retErr=$?
     echo "Exit Status: ${retErr}"  1>&2
-
 done
-echo  "${output}"
+
+if [[ "X${output}Y" != 'XY' ]] ; then
+    echo  "${output}"
+fi
