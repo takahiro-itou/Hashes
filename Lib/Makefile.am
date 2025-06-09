@@ -3,7 +3,7 @@
 ##    List of Directories.
 ##
 
-SUBLIBS                 =  Common  MD5
+SUBLIBS                 =  Common  Crc  MD5
 
 SUBDIRS                 =  Tests  .Config  $(SUBLIBS)  .
 

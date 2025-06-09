@@ -161,6 +161,7 @@ AC_CONFIG_FILES([
     Lib/Makefile
     Lib/.Config/Makefile
     Lib/Common/Makefile
+    Lib/Crc/Makefile
     Lib/MD5/Makefile
 ], [
     chmod +x Bin/call-md5sum Bin/smd5sum
@@ -176,6 +177,7 @@ dnl
 
 AC_CONFIG_FILES([
     Lib/Common/Tests/Makefile
+    Lib/Crc/Tests/Makefile
     Lib/MD5/Tests/Makefile
 ])
 
